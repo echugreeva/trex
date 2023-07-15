@@ -5,13 +5,17 @@ import {
     Typography,
     Button,
     TextField,
-    Stepper,
+    MobileStepper,
     Step,
     StepLabel,
     Checkbox,
-    Chip
+    Chip,
+    Select,
+    MenuItem
 
 } from "@mui/material";
+import countries from "i18n-iso-countries";
+import enLocale from "i18n-iso-countries/langs/en.json";
 
 const steps = ["Step 1", "Step 2", "Step 3", "Step 4"];
 const hobbies = ['Adventure', 'Hiking', 'Beach', 'Mountains', 'Forest', 'City', 'Nature', 'History', 'Art', 'Music', 'Food', 'Nightlife', 'Backpacking', 'Culture', 'Luxury', 'Yoga', 'Wine', 'Meditation'
@@ -20,8 +24,21 @@ const hobbies = ['Adventure', 'Hiking', 'Beach', 'Mountains', 'Forest', 'City', 
 //in the future get all input fields and step in props and generate form as a function
 
 const OnboardingForm = () => {
+
+    countries.registerLocale(enLocale);
+    const countryObj = countries.getNames("en", { select: "official" });
+
+    const countryArr = Object.entries(countryObj).map(([key, value]) => {
+        return {
+            label: value,
+            value: key
+        };
+    });
     const [activeStep, setActiveStep] = useState(0);
     const [formData, setFormData] = useState({});
+    const [selectedCountry, setSelectedCountry] = useState("");
+
+    const selectCountryHandler = (value) => setSelectedCountry(value);
 
     const handleNext = () => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -40,13 +57,20 @@ const OnboardingForm = () => {
 
     return (
         <Container maxWidth="sm" sx={{ mt: 8 }}>
-            <Stepper activeStep={activeStep}>
-                {steps.map((label) => (
+            <MobileStepper
+                variant='dots'
+                activeStep={activeStep}
+                steps={4}
+                position="static"
+                sx={{ minWidth: '100%', flexGrow: 1, margin: '0 auto' }}
+                >
+                {/* {steps.map((label) => (
                     <Step key={label}>
                         <StepLabel>{label}</StepLabel>
                     </Step>
-                ))}
-            </Stepper>
+                ))} */}
+                
+            </MobileStepper>
             <Grid container direction="column" alignItems="center" spacing={2}>
                 <Grid item xs={12}>
                     {activeStep === 0 && (
@@ -85,13 +109,26 @@ const OnboardingForm = () => {
                                 fullWidth
                                 margin="normal"
                             />
-                            <TextField
-                                label="Your home location"
+
+                            <Select
+                                label="Home Location"
                                 name="home-location"
-                                onChange={handleChange}
                                 fullWidth
                                 margin="normal"
-                            />
+                                value={selectedCountry}
+                                onChange={(e) => {
+
+                                    selectCountryHandler(e.target.value)
+                                    handleChange(e)
+                                }}
+                            >
+                                {!!countryArr?.length &&
+                                    countryArr.map(({ label, value }) => (
+                                        <MenuItem key={value} value={value}>
+                                            {label}
+                                        </MenuItem>
+                                    ))}
+                            </Select>
 
 
                         </>
@@ -108,7 +145,7 @@ const OnboardingForm = () => {
                                     })
                                 }
 
-    
+
                             </div>
                         </>
                     )}
@@ -121,6 +158,8 @@ const OnboardingForm = () => {
                                 onChange={handleChange}
                                 fullWidth
                                 margin="normal"
+                                multiline
+                                rows={4}
                             />
 
 
