@@ -1,12 +1,16 @@
 import Header from './Header'
 import Footer from './Footer'
+import ImageCard from './ImageCard';
+import Container from '@mui/material/Container';
 
 const Home = () => {
     return(
-        <div>
-            <Footer/>
+        <Container maxWidth="sm">
+            <Header/>
+            <ImageCard/>
+            {/* <Footer/> */}
 
-        </div>
+        </Container>
     )
 }
 

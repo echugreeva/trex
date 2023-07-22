@@ -9,8 +9,9 @@ import Paper from '@mui/material/Paper';
 const Footer = ()=> {
   const [value, setValue] = useState(0);
     return (
-        <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
-        <BottomNavigation
+        <Paper maxWidth="sm" sx={{  bottom: 0, left: 0, right: 0 }} elevation={3}> 
+        {/* position: 'fixed' for footer */}
+        <BottomNavigation maxWidth="sm"
           showLabels
           value={value}
           onChange={(event, newValue) => {

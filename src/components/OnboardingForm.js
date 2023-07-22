@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
     Container,
     Grid,
@@ -37,7 +38,8 @@ const OnboardingForm = () => {
     const [activeStep, setActiveStep] = useState(0);
     const [formData, setFormData] = useState({});
     const [selectedCountry, setSelectedCountry] = useState("");
-
+    const navigate = useNavigate()
+    
     const selectCountryHandler = (value) => setSelectedCountry(value);
 
     const handleNext = () => {
@@ -54,7 +56,9 @@ const OnboardingForm = () => {
             [event.target.name]: event.target.value,
         });
     };
-
+    const handleSubmit = () => {
+        navigate('/home')
+    }
     return (
         <Container maxWidth="sm" sx={{ mt: 8 }}>
             <MobileStepper
@@ -167,14 +171,22 @@ const OnboardingForm = () => {
                     )}
                 </Grid>
                 <Grid item xs={12}>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={handleNext}
-                        disabled={activeStep === steps.length - 1}
-                    >
-                        {activeStep === steps.length - 1 ? "Submit" : "Next"}
-                    </Button>
+                {activeStep !== steps.length - 1&& (<Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleNext}
+                   >
+                        Next
+                    </Button>)}
+                    
+                    
+                    {activeStep === steps.length - 1&& (<Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleSubmit}
+                   >
+                    Submit
+                    </Button>)}
                     {activeStep > 0 && (
                         <Button
                             variant="contained"
