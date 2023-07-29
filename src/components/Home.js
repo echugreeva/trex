@@ -5,12 +5,13 @@ import Container from '@mui/material/Container';
 
 const Home = () => {
     return(
-        <Container maxWidth="sm">
-            <Header/>
-            <ImageCard/>
-            {/* <Footer/> */}
+        // <Container maxWidth="sm">
+        //     {/* <Header/> */}
+            
+        //     {/* <Footer/> */}
 
-        </Container>
+        // </Container>
+        <ImageCard/>
     )
 }
 

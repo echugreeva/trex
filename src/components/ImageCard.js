@@ -47,7 +47,7 @@ const ImageCard = () => {
 
     return (
         <Card >
-            <CardHeader
+            {/* <CardHeader
                 avatar={
                     <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
                         R
@@ -60,27 +60,34 @@ const ImageCard = () => {
                 // }
                 title="Hawaii"
                 subheader="September 14, 2016"
-            />
+            /> */}
             {/* <CardMedia
         
       /> */}
-            <TripGallery items={items} />
-            <CardActions sx={{ display: 'flex', justifyContent: "space-around", width: '100%' }}>
-                <IconButton aria-label="add to declined">
-                    <ClearIcon />
-                </IconButton>
-                <IconButton aria-label="add to wishlist">
-                    <BookmarksIcon />
-                </IconButton>
-                <IconButton aria-label="add to intresting">
-                    <FavoriteIcon />
-                </IconButton>
+            {/* <TripGallery items={items} /> */}
+            
+            <CardContent sx={{
+                display: 'flex',
+                position: 'relative',
+                justifyContent: 'center',
+                width: '100%',
+                height: '450px',
+                backgroundImage: `url(${items[0]})`,
+                backgroundPosition: "center",
+                backgroundSize: "cover",
+                backgroundRepeat: "no-repeat",
                 
+            }}
 
-
-            </CardActions>
-            <CardContent>
-                <Typography variant="body2" color="text.secondary">
+            >
+                <Typography variant="body2" color="text.secondary" sx={{
+                  color: "blue",
+                  position: "absolute",
+                  bottom: "10px",
+                  left: "5px",
+                  fontSize: "18px",
+                  fontWeight: "bold"
+                }}>
                     Trip description
                 </Typography>
                 <ExpandMore
@@ -105,6 +112,20 @@ const ImageCard = () => {
 
                 </CardContent>
             </Collapse>
+            <CardActions sx={{ display: 'flex', justifyContent: "space-around", width: '100%' }}>
+                <IconButton aria-label="add to declined">
+                    <ClearIcon />
+                </IconButton>
+                <IconButton aria-label="add to wishlist">
+                    <BookmarksIcon />
+                </IconButton>
+                <IconButton aria-label="add to intresting">
+                    <FavoriteIcon />
+                </IconButton>
+
+
+
+            </CardActions>
         </Card>
     );
 }

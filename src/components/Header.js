@@ -50,11 +50,12 @@ const Header = () => {
             <AppBar position="static">
                 <Toolbar sx={{ display: 'flex', justifyContent: "space-around", width: '100%' }}>
                     <IconButton
+                    
                         size="large"
                         aria-label="account of current user"
                         aria-controls="menu-appbar"
                         aria-haspopup="true"
-                        color="inherit"
+                        color={(window.location.pathname==='/')?'red':"inherit"}
                         onClick={
                             () => {
                                 navigate('/')
@@ -66,7 +67,7 @@ const Header = () => {
                     <IconButton
                         size="large"
                         edge="start"
-                        color="inherit"
+                        color={(window.location.pathname==='/home')?'red':"inherit"}
                         aria-label="menu"
                         sx={{ mr: 2 }}
                         onClick={
@@ -80,12 +81,12 @@ const Header = () => {
                     <IconButton
                         size="large"
                         edge="start"
-                        color="inherit"
+                        color={(window.location.pathname==='/chats')?'red':"inherit"}
                         aria-label="menu"
                         sx={{ mr: 2 }}
                         onClick={
                             () => {
-                                navigate('/messages')
+                                navigate('/chats')
                             }
                         }
                     >
