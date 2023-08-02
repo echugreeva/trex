@@ -81,7 +81,7 @@ const Header = () => {
                     <IconButton
                         size="large"
                         edge="start"
-                        color={(window.location.pathname==='/chats')?'red':"inherit"}
+                        color={(window.location.pathname.includes('/chats'))?'red':"inherit"}
                         aria-label="menu"
                         sx={{ mr: 2 }}
                         onClick={

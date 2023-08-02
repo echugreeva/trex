@@ -5,6 +5,7 @@ import OnboardingForm from './components/OnboardingForm';
 import Home from './components/Home';
 import ChatScreen from './components/chat/ChatsScreen'
 import Header from './components/Header'
+import SingleChat from './components/chat/SingleChat'
 
 function App() {
   return (
@@ -16,6 +17,8 @@ function App() {
         <Route path='/home' element={<Home/>}/>
         <Route path='/chats' element={<ChatScreen/>}/>
         <Route path='/settings' element={<Home/>}/>
+        <Route path="/chats/:person"  element={<SingleChat/>}/>   
+      
       </Routes>
       
       

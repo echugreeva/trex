@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography';
 
 const ChatPreview = ({ name, message, profilePic, timestamp }) => {
     return (
-        // <Link to={`/chat/${name}`}>
+        <Link to={`/chats/${name}`}>
         <ListItem >
             
             <ListItemAvatar>
@@ -23,7 +23,7 @@ const ChatPreview = ({ name, message, profilePic, timestamp }) => {
             </ListItemText>
 
         </ListItem>
-        // </Link>
+        </Link>
     );
 };
 
