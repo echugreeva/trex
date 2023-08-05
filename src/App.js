@@ -10,7 +10,7 @@ import SingleChat from './components/chat/SingleChat'
 function App() {
   return (
     <BrowserRouter>
-    <Container maxWidth="sm" >
+    <Container maxWidth="xs" >
       <Header/>
       <Routes>
         <Route path='/' element={<OnboardingForm/>}/>

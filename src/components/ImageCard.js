@@ -1,6 +1,8 @@
 import { useState } from "react";
+import trips from '../trips.json'
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
+import Box from '@mui/material/Box'
 import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
@@ -36,16 +38,45 @@ const ImageCard = () => {
         setExpanded(!expanded);
     };
 
-    const items = [
-        'https://images.pexels.com/photos/457882/pexels-photo-457882.jpeg?auto=compress&cs=tinysrgb&w=1600',
-        'https://images.pexels.com/photos/635279/pexels-photo-635279.jpeg?auto=compress&cs=tinysrgb&w=1600',
-        'https://images.pexels.com/photos/994605/pexels-photo-994605.jpeg?auto=compress&cs=tinysrgb&w=1600'
+    // const items = [
+    //     'https://images.pexels.com/photos/457882/pexels-photo-457882.jpeg?auto=compress&cs=tinysrgb&w=1600',
+    //     'https://images.pexels.com/photos/635279/pexels-photo-635279.jpeg?auto=compress&cs=tinysrgb&w=1600',
+    //     'https://images.pexels.com/photos/994605/pexels-photo-994605.jpeg?auto=compress&cs=tinysrgb&w=1600'
 
 
-    ]
+    // ]
 
+    const [tripToShow, setTrip] = useState([...trips.trips])
+    const [wishlist, setWishList] = useState([])
+    const [reject, setReject] = useState([])
+    const [matchReq, setMatchReq] = useState([])
 
+    const tripEvaluate = () => {
+        let newAr = [...tripToShow]
+        newAr.shift()
+        console.log(newAr)
+        setTrip(newAr)
+    }
+
+    const handleReject = () => {
+        setReject([...reject, tripToShow[0].id])
+        tripEvaluate()
+        // setTrip([...tripToShow].shift())
+    }
+
+    const handleAddToWishList = () => {
+        setWishList([...wishlist, tripToShow[0].id])
+        tripEvaluate()
+
+    }
+
+    const handleMatchReq = () => {
+        //req logic
+        tripEvaluate()
+    }
+    console.log(tripToShow)
     return (
+
         <Card >
             {/* <CardHeader
                 avatar={
@@ -65,31 +96,63 @@ const ImageCard = () => {
         
       /> */}
             {/* <TripGallery items={items} /> */}
-            
+
             <CardContent sx={{
                 display: 'flex',
                 position: 'relative',
                 justifyContent: 'center',
                 width: '100%',
                 height: '450px',
-                backgroundImage: `url(${items[0]})`,
+                backgroundImage: `url(${tripToShow[0].image[0]})`,
                 backgroundPosition: "center",
                 backgroundSize: "cover",
                 backgroundRepeat: "no-repeat",
-                
+
             }}
 
             >
-                <Typography variant="body2" color="text.secondary" sx={{
-                  color: "blue",
-                  position: "absolute",
-                  bottom: "10px",
-                  left: "5px",
-                  fontSize: "18px",
-                  fontWeight: "bold"
+                <Box sx={{
+
+                    position: "absolute",
+                    bottom: "10px",
+                    left: "5px"
                 }}>
-                    Trip description
-                </Typography>
+                    <Typography variant="body2" color="text.secondary" sx={{
+                        color: "white",
+
+                        fontSize: "18px",
+                        fontWeight: "bold"
+                    }}>
+                        {tripToShow[0].location}
+
+
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" sx={{
+                        color: "white",
+
+                        fontSize: "16px",
+
+                    }}>
+
+                        {tripToShow[0].trip_title}
+
+
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" sx={{
+                        color: "white",
+
+                        fontSize: "18px",
+
+                    }}>
+ 
+                        {tripToShow[0].date}
+
+                    </Typography>
+                </Box>
+
+
+
+
                 <ExpandMore
                     expand={expanded}
                     onClick={handleExpandClick}
@@ -107,19 +170,19 @@ const ImageCard = () => {
                         More details
                     </Typography>
                     <Typography paragraph>
-                        ksdgbmldfmnghmnglhnm
+                        {tripToShow[0].description}
                     </Typography>
 
                 </CardContent>
             </Collapse>
             <CardActions sx={{ display: 'flex', justifyContent: "space-around", width: '100%' }}>
-                <IconButton aria-label="add to declined">
+                <IconButton aria-label="add to declined" onClick={()=>{handleReject()}}>
                     <ClearIcon />
                 </IconButton>
-                <IconButton aria-label="add to wishlist">
+                <IconButton aria-label="add to wishlist" onClick={()=>{handleAddToWishList()}}>
                     <BookmarksIcon />
                 </IconButton>
-                <IconButton aria-label="add to intresting">
+                <IconButton aria-label="add to intresting" onClick={()=>{handleMatchReq()}}>
                     <FavoriteIcon />
                 </IconButton>
 
