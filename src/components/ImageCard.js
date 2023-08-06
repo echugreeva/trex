@@ -19,6 +19,8 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import TripGallery from "./TripGallery";
 import BookmarksIcon from '@mui/icons-material/Bookmarks';
 import ClearIcon from '@mui/icons-material/Clear';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -50,18 +52,38 @@ const ImageCard = () => {
     const [wishlist, setWishList] = useState([])
     const [reject, setReject] = useState([])
     const [matchReq, setMatchReq] = useState([])
+    const [imgIndex, setIndex]=useState(0)
+
+    const scrollImg =(direction)=> {
+        let length = tripToShow[0].image.length
+        console.log(length)
+        console.log(imgIndex)
+        if(direction=='forward'&& imgIndex<length-1){
+        
+                setIndex(imgIndex+1)
+           
+        }
+        if(direction=='back'&&imgIndex>=1){
+            
+                setIndex(imgIndex-1)
+            
+        }
+        console.log(imgIndex)
+
+    }
 
     const tripEvaluate = () => {
         let newAr = [...tripToShow]
         newAr.shift()
         console.log(newAr)
         setTrip(newAr)
+        setIndex(0)
     }
 
     const handleReject = () => {
         setReject([...reject, tripToShow[0].id])
         tripEvaluate()
-        // setTrip([...tripToShow].shift())
+    
     }
 
     const handleAddToWishList = () => {
@@ -75,35 +97,17 @@ const ImageCard = () => {
         tripEvaluate()
     }
     console.log(tripToShow)
+    console.log(imgIndex)
     return (
 
         <Card >
-            {/* <CardHeader
-                avatar={
-                    <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                        R
-                    </Avatar>
-                }
-                // action={
-                //   <IconButton aria-label="settings">
-                //     <MoreVertIcon />
-                //   </IconButton>
-                // }
-                title="Hawaii"
-                subheader="September 14, 2016"
-            /> */}
-            {/* <CardMedia
-        
-      /> */}
-            {/* <TripGallery items={items} /> */}
-
             <CardContent sx={{
                 display: 'flex',
                 position: 'relative',
                 justifyContent: 'center',
                 width: '100%',
                 height: '450px',
-                backgroundImage: `url(${tripToShow[0].image[0]})`,
+                backgroundImage: `url(${tripToShow[0].image[imgIndex]})`,
                 backgroundPosition: "center",
                 backgroundSize: "cover",
                 backgroundRepeat: "no-repeat",
@@ -111,6 +115,16 @@ const ImageCard = () => {
             }}
 
             >
+                <IconButton size="large" aria-label="back" onClick={()=>{scrollImg('back')}}>
+                <ArrowBackIosIcon />
+                </IconButton>
+                <IconButton aria-label="back" onClick={()=>{scrollImg('forward')}}>
+                <ArrowForwardIosIcon/>
+                </IconButton>
+               
+                
+
+
                 <Box sx={{
 
                     position: "absolute",
@@ -158,8 +172,9 @@ const ImageCard = () => {
                     onClick={handleExpandClick}
                     aria-expanded={expanded}
                     aria-label="show more"
+                    sx={{ width:35, heigth: 35 }}
                 >
-                    <ExpandMoreIcon />
+                    <ExpandMoreIcon sx={{ fontSize: 35,color: "white",padding: '5px'}}/>
                 </ExpandMore>
             </CardContent>
 
@@ -177,13 +192,13 @@ const ImageCard = () => {
             </Collapse>
             <CardActions sx={{ display: 'flex', justifyContent: "space-around", width: '100%' }}>
                 <IconButton aria-label="add to declined" onClick={()=>{handleReject()}}>
-                    <ClearIcon />
+                    <ClearIcon  color = 'error' sx={{ fontSize: 35}}/>
                 </IconButton>
                 <IconButton aria-label="add to wishlist" onClick={()=>{handleAddToWishList()}}>
-                    <BookmarksIcon />
+                    <BookmarksIcon color = 'secondary' sx={{ fontSize: 35 }} />
                 </IconButton>
                 <IconButton aria-label="add to intresting" onClick={()=>{handleMatchReq()}}>
-                    <FavoriteIcon />
+                    <FavoriteIcon color = 'success' sx={{ fontSize: 35 }}/>
                 </IconButton>
 
 

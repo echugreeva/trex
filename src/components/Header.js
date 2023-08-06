@@ -34,7 +34,7 @@ const Header = () => {
     //   };
 
     return (
-        <Box sx={{ flexGrow: 1 }}>
+        <Box  sx={{ flexGrow: 1 }}>
             <FormGroup>
                 <FormControlLabel
                     control={
@@ -47,7 +47,7 @@ const Header = () => {
                     label={auth ? 'Logout' : 'Login'}
                 />
             </FormGroup>
-            <AppBar position="static">
+            <AppBar position="static" sx={{backgroundColor:'white'}}>
                 <Toolbar sx={{ display: 'flex', justifyContent: "space-around", width: '100%' }}>
                     <IconButton
                     
@@ -55,19 +55,19 @@ const Header = () => {
                         aria-label="account of current user"
                         aria-controls="menu-appbar"
                         aria-haspopup="true"
-                        color={(window.location.pathname==='/')?'red':"inherit"}
+                        color={(window.location.pathname==='/')?'error':"white"}
                         onClick={
                             () => {
                                 navigate('/')
                             }
                         }
                     >
-                        <AccountCircle />
+                        <AccountCircle sx={{ fontSize: 35 }}  />
                     </IconButton>
                     <IconButton
                         size="large"
                         edge="start"
-                        color={(window.location.pathname==='/home')?'red':"inherit"}
+                        color={(window.location.pathname==='/home')?'error':"white"}
                         aria-label="menu"
                         sx={{ mr: 2 }}
                         onClick={
@@ -76,12 +76,12 @@ const Header = () => {
                             }
                         }
                     >
-                        <TravelExploreIcon />
+                        <TravelExploreIcon sx={{ fontSize: 35 }} />
                     </IconButton>
                     <IconButton
                         size="large"
                         edge="start"
-                        color={(window.location.pathname.includes('/chats'))?'red':"inherit"}
+                        color={(window.location.pathname.includes('/chats'))?'error':"white"}
                         aria-label="menu"
                         sx={{ mr: 2 }}
                         onClick={
@@ -90,7 +90,7 @@ const Header = () => {
                             }
                         }
                     >
-                        <ChatIcon />
+                        <ChatIcon sx={{ fontSize: 35 }}/>
                     </IconButton>
 
 
