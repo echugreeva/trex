@@ -6,6 +6,8 @@ import Home from './components/Home';
 import ChatScreen from './components/chat/ChatsScreen'
 import Header from './components/Header'
 import SingleChat from './components/chat/SingleChat'
+import TripForm from "./components/TripForm";
+import Profile from './components/Profile'
 
 function App() {
   return (
@@ -17,7 +19,9 @@ function App() {
         <Route path='/home' element={<Home/>}/>
         <Route path='/chats' element={<ChatScreen/>}/>
         <Route path='/settings' element={<Home/>}/>
-        <Route path="/chats/:person"  element={<SingleChat/>}/>   
+        <Route path="/chats/:person"  element={<SingleChat/>}/>
+        <Route path="/newtrip"  element={<TripForm/>}/>
+        <Route path='/profile' element={<Profile/>}/> 
       
       </Routes>
       

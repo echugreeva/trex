@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import trips from '../trips.json'
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
@@ -21,6 +22,9 @@ import BookmarksIcon from '@mui/icons-material/Bookmarks';
 import ClearIcon from '@mui/icons-material/Clear';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import InfoIcon from '@mui/icons-material/Info';
+import { getFromLocalStorage, addToLocalStorage } from "../helpers/localStorage";
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -34,6 +38,7 @@ const ExpandMore = styled((props) => {
 }));
 
 const ImageCard = () => {
+    const navigate = useNavigate()
     const [expanded, setExpanded] = useState(false);
 
     const handleExpandClick = () => {
@@ -52,22 +57,35 @@ const ImageCard = () => {
     const [wishlist, setWishList] = useState([])
     const [reject, setReject] = useState([])
     const [matchReq, setMatchReq] = useState([])
-    const [imgIndex, setIndex]=useState(0)
+    const [imgIndex, setIndex] = useState(0)
 
-    const scrollImg =(direction)=> {
+    const scrollImg = (direction) => {
         let length = tripToShow[0].image.length
         console.log(length)
         console.log(imgIndex)
-        if(direction=='forward'&& imgIndex<length-1){
-        
-                setIndex(imgIndex+1)
-           
+        if (direction == 'forward' && imgIndex < length - 1) {
+
+            setIndex(imgIndex + 1)
+
         }
-        if(direction=='back'&&imgIndex>=1){
-            
-                setIndex(imgIndex-1)
-            
+        if (direction == 'back' && imgIndex >= 1) {
+
+            setIndex(imgIndex - 1)
+
         }
+        if (direction == 'back' && imgIndex === 0) {
+
+            setIndex(length - 1)
+
+
+        }
+        if (direction == 'forward' && imgIndex === length - 1) {
+
+            setIndex(0)
+
+
+        }
+
         console.log(imgIndex)
 
     }
@@ -83,12 +101,15 @@ const ImageCard = () => {
     const handleReject = () => {
         setReject([...reject, tripToShow[0].id])
         tripEvaluate()
-    
+        addToLocalStorage('rejectedTrips',reject )
+
     }
 
     const handleAddToWishList = () => {
         setWishList([...wishlist, tripToShow[0].id])
         tripEvaluate()
+        addToLocalStorage('wishListTrips',wishlist )
+
 
     }
 
@@ -98,114 +119,137 @@ const ImageCard = () => {
     }
     console.log(tripToShow)
     console.log(imgIndex)
-    return (
-
-        <Card >
-            <CardContent sx={{
-                display: 'flex',
-                position: 'relative',
-                justifyContent: 'center',
-                width: '100%',
-                height: '450px',
-                backgroundImage: `url(${tripToShow[0].image[imgIndex]})`,
-                backgroundPosition: "center",
-                backgroundSize: "cover",
-                backgroundRepeat: "no-repeat",
-
-            }}
-
-            >
-                <IconButton size="large" aria-label="back" onClick={()=>{scrollImg('back')}}>
-                <ArrowBackIosIcon />
-                </IconButton>
-                <IconButton aria-label="back" onClick={()=>{scrollImg('forward')}}>
-                <ArrowForwardIosIcon/>
-                </IconButton>
-               
-                
-
-
-                <Box sx={{
-
-                    position: "absolute",
-                    bottom: "10px",
-                    left: "5px"
-                }}>
-                    <Typography variant="body2" color="text.secondary" sx={{
-                        color: "white",
-
-                        fontSize: "18px",
-                        fontWeight: "bold"
-                    }}>
-                        {tripToShow[0].location}
-
-
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary" sx={{
-                        color: "white",
-
-                        fontSize: "16px",
-
-                    }}>
-
-                        {tripToShow[0].trip_title}
-
-
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary" sx={{
-                        color: "white",
-
-                        fontSize: "18px",
-
-                    }}>
- 
-                        {tripToShow[0].date}
-
-                    </Typography>
-                </Box>
+    if (tripToShow.length<1) {
+        return (
+            <Typography>
+                No new trips available at the moment.
+                Come back later 
+                Or Create your own trip
+            </Typography>
+        )
+    } else {
 
 
 
+        return (
 
-                <ExpandMore
-                    expand={expanded}
-                    onClick={handleExpandClick}
-                    aria-expanded={expanded}
-                    aria-label="show more"
-                    sx={{ width:35, heigth: 35 }}
+            <Card>
+                <CardContent sx={{
+                    display: 'flex',
+                    position: 'relative',
+                    justifyContent: 'space-between',
+                    height: '450px',
+                    backgroundImage: `url(${tripToShow[0].image[imgIndex]})`,
+                    backgroundPosition: "center",
+                    backgroundSize: "cover",
+                    backgroundRepeat: "no-repeat",
+
+                }}
+
                 >
-                    <ExpandMoreIcon sx={{ fontSize: 35,color: "white",padding: '5px'}}/>
-                </ExpandMore>
-            </CardContent>
 
-            <Collapse in={expanded} timeout="auto" unmountOnExit>
-                <CardContent>
-                    <Typography paragraph>Trip details:</Typography>
-                    <Typography paragraph>
-                        More details
-                    </Typography>
-                    <Typography paragraph>
-                        {tripToShow[0].description}
-                    </Typography>
+                    <ArrowBackIosIcon onClick={() => { scrollImg('back') }} sx={{ marginTop: '50%' }} />
+
+                    {/* <IconButton aria-label="back" onClick={()=>{scrollImg('forward')}}> */}
+                    <ArrowForwardIosIcon onClick={() => { scrollImg('forward') }} sx={{ marginTop: '50%' }} />
+                    {/* </IconButton> */}
+
+
+
+
+                    <Box sx={{
+
+                        position: "absolute",
+                        bottom: "10px",
+                        backgroundColor: 'rgba(0, 0, 0, 0.3)',
+                        padding: '2px 5px'
+
+                    }}>
+                        <Typography variant="body2" color="text.secondary" sx={{
+                            color: "white",
+
+                            fontSize: "18px",
+                            fontWeight: "bold"
+                        }}>
+                            {tripToShow[0].location}
+
+
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary" sx={{
+                            color: "white",
+
+                            fontSize: "16px",
+
+                        }}>
+
+                            {tripToShow[0].trip_title}
+
+
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary" sx={{
+                            color: "white",
+
+                            fontSize: "18px",
+
+                        }}>
+
+                            {tripToShow[0].date}
+
+                        </Typography>
+                        <ExpandMore
+                            expand={expanded}
+                            onClick={handleExpandClick}
+                            aria-expanded={expanded}
+                            aria-label="show more"
+                            sx={{ width: 35, heigth: 35 }}
+                        >
+                            <InfoIcon sx={{ fontSize: 35, color: "white" }} />
+                        </ExpandMore>
+                    </Box>
+
+
+
+
 
                 </CardContent>
-            </Collapse>
-            <CardActions sx={{ display: 'flex', justifyContent: "space-around", width: '100%' }}>
-                <IconButton aria-label="add to declined" onClick={()=>{handleReject()}}>
-                    <ClearIcon  color = 'error' sx={{ fontSize: 35}}/>
-                </IconButton>
-                <IconButton aria-label="add to wishlist" onClick={()=>{handleAddToWishList()}}>
-                    <BookmarksIcon color = 'secondary' sx={{ fontSize: 35 }} />
-                </IconButton>
-                <IconButton aria-label="add to intresting" onClick={()=>{handleMatchReq()}}>
-                    <FavoriteIcon color = 'success' sx={{ fontSize: 35 }}/>
-                </IconButton>
+
+                <Collapse in={expanded} timeout="auto" unmountOnExit>
+                    <CardContent>
+                        <Typography paragraph>Trip details:</Typography>
+                        <Typography paragraph>
+                            More details
+                        </Typography>
+                        <Typography paragraph>
+                            {tripToShow[0].description}
+                        </Typography>
+
+                    </CardContent>
+                </Collapse>
+                <CardActions sx={{ display: 'flex', justifyContent: "space-around", width: '100%' }}>
+                    <IconButton aria-label="add to declined" onClick={() => { handleReject() }}>
+                        <ClearIcon color='error' sx={{ fontSize: 35 }} />
+                    </IconButton>
+                    <IconButton aria-label="add to wishlist" onClick={() => { handleAddToWishList() }}>
+                        <BookmarksIcon color='secondary' sx={{ fontSize: 35 }} />
+                    </IconButton>
+                    <IconButton aria-label="new trip" onClick={
+                        () => {
+                            navigate('/newtrip')
+                        }
+                    }>
+                        <AddCircleIcon color='secondary' sx={{ fontSize: 35 }} />
+                    </IconButton>
+                    <IconButton aria-label="add to intresting" onClick={() => { handleMatchReq() }}>
+                        <FavoriteIcon color='success' sx={{ fontSize: 35 }} />
+                    </IconButton>
+                    
 
 
 
-            </CardActions>
-        </Card>
-    );
+                </CardActions>
+            </Card>
+        );
+    }
 }
 
 

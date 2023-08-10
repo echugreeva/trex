@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
@@ -8,9 +8,10 @@ import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 
 const ChatPreview = ({ name, message, profilePic, timestamp }) => {
+    const navigate = useNavigate()
     return (
-        <Link to={`/chats/${name}`}>
-        <ListItem >
+       
+        <ListItem onClick={()=>{navigate(`/chats/${name}`)}}>
             
             <ListItemAvatar>
                 <Avatar src={profilePic} />
@@ -23,7 +24,7 @@ const ChatPreview = ({ name, message, profilePic, timestamp }) => {
             </ListItemText>
 
         </ListItem>
-        </Link>
+       
     );
 };
 

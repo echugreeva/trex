@@ -55,10 +55,10 @@ const Header = () => {
                         aria-label="account of current user"
                         aria-controls="menu-appbar"
                         aria-haspopup="true"
-                        color={(window.location.pathname==='/')?'error':"white"}
+                        color={(window.location.pathname==='/profile')?'error':"white"}
                         onClick={
                             () => {
-                                navigate('/')
+                                navigate('/profile')
                             }
                         }
                     >
