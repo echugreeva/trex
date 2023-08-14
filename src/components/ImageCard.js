@@ -115,7 +115,9 @@ const ImageCard = () => {
 
     const handleMatchReq = () => {
         //req logic
+        setMatchReq([...matchReq, tripToShow[0].id])
         tripEvaluate()
+        addToLocalStorage('matchedTrips',matchReq )
     }
     console.log(tripToShow)
     console.log(imgIndex)
@@ -232,13 +234,13 @@ const ImageCard = () => {
                     <IconButton aria-label="add to wishlist" onClick={() => { handleAddToWishList() }}>
                         <BookmarksIcon color='secondary' sx={{ fontSize: 35 }} />
                     </IconButton>
-                    <IconButton aria-label="new trip" onClick={
+                    {/* <IconButton aria-label="new trip" onClick={
                         () => {
                             navigate('/newtrip')
                         }
                     }>
                         <AddCircleIcon color='secondary' sx={{ fontSize: 35 }} />
-                    </IconButton>
+                    </IconButton> */}
                     <IconButton aria-label="add to intresting" onClick={() => { handleMatchReq() }}>
                         <FavoriteIcon color='success' sx={{ fontSize: 35 }} />
                     </IconButton>

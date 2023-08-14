@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Container from '@mui/material/Container';
 import OnboardingForm from './components/OnboardingForm';
 import Home from './components/Home';
-import ChatScreen from './components/chat/ChatsScreen'
+import ChatWishListScreen from './components/chat/ChatWishListScreen'
 import Header from './components/Header'
 import SingleChat from './components/chat/SingleChat'
 import TripForm from "./components/TripForm";
@@ -17,7 +17,7 @@ function App() {
       <Routes>
         <Route path='/' element={<OnboardingForm/>}/>
         <Route path='/home' element={<Home/>}/>
-        <Route path='/chats' element={<ChatScreen/>}/>
+        <Route path='/chats' element={<ChatWishListScreen/>}/>
         <Route path='/settings' element={<Home/>}/>
         <Route path="/chats/:person"  element={<SingleChat/>}/>
         <Route path="/newtrip"  element={<TripForm/>}/>
