@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import dayjs from 'dayjs';
 import {
@@ -25,7 +25,7 @@ import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import FormControlLabel from '@mui/material/FormControlLabel';
-
+import { getFromLocalStorage, addToLocalStorage } from "../helpers/localStorage";
 
 const steps = ["Step 1", "Step 2", "Step 3", "Step 4"];
 const hobbies = ['Adventure', 'Hiking', 'Beach', 'Mountains', 'Forest', 'City', 'Nature', 'History', 'Art', 'Music', 'Food', 'Nightlife', 'Backpacking', 'Culture', 'Luxury', 'Yoga', 'Wine', 'Meditation'
@@ -82,8 +82,10 @@ const itemData = [
 ];
 //in the future get all input fields and step in props and generate form as a function
 
-const TripForm = () => {
 
+
+const TripForm = () => {
+    const [matchListIds, setIds] = useState(getFromLocalStorage('matchedTrips'))
     countries.registerLocale(enLocale);
     const countryObj = countries.getNames("en", { select: "official" });
 
@@ -115,6 +117,7 @@ const TripForm = () => {
         });
     };
     const handleSubmit = () => {
+
         navigate('/chats')
     }
     return (
