@@ -20,6 +20,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import TripGallery from "./TripGallery";
 import BookmarksIcon from '@mui/icons-material/Bookmarks';
 import ClearIcon from '@mui/icons-material/Clear';
+import StarsSharpIcon from '@mui/icons-material/StarsSharp';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
@@ -135,12 +136,12 @@ const ImageCard = () => {
 
         return (
 
-            <Card>
+            <Card sx={{ height: '100%',overflowY: 'auto'}}>
                 <CardContent sx={{
                     display: 'flex',
                     position: 'relative',
                     justifyContent: 'space-between',
-                    height: '450px',
+                    height: '85%',
                     backgroundImage: `url(${tripToShow[0].image[imgIndex]})`,
                     backgroundPosition: "center",
                     backgroundSize: "cover",
@@ -229,10 +230,10 @@ const ImageCard = () => {
                 </Collapse>
                 <CardActions sx={{ display: 'flex', justifyContent: "space-around", width: '100%' }}>
                     <IconButton aria-label="add to declined" onClick={() => { handleReject() }}>
-                        <ClearIcon color='error' sx={{ fontSize: 35 }} />
+                        <ClearIcon color='error' sx={{ fontSize: 40 }} />
                     </IconButton>
                     <IconButton aria-label="add to wishlist" onClick={() => { handleAddToWishList() }}>
-                        <BookmarksIcon color='secondary' sx={{ fontSize: 35 }} />
+                        <StarsSharpIcon color='primary' sx={{ fontSize: 45 }} />
                     </IconButton>
                     {/* <IconButton aria-label="new trip" onClick={
                         () => {
@@ -242,7 +243,7 @@ const ImageCard = () => {
                         <AddCircleIcon color='secondary' sx={{ fontSize: 35 }} />
                     </IconButton> */}
                     <IconButton aria-label="add to intresting" onClick={() => { handleMatchReq() }}>
-                        <FavoriteIcon color='success' sx={{ fontSize: 35 }} />
+                        <FavoriteIcon color='success' sx={{ fontSize: 40 }} />
                     </IconButton>
                     
 

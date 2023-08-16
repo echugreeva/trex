@@ -17,6 +17,7 @@ const ChatScreen = () => {
                 matchTrips.map(trip => {
                     return (
                         <ChatPreview
+                            trip={trip}
                             name={trip.trip_title}
                             message={trip.location}
                             timestamp="6 mins ago"

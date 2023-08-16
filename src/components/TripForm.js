@@ -124,7 +124,7 @@ const TripForm = () => {
                 activeStep={activeStep}
                 steps={4}
                 position="static"
-                sx={{ minWidth: '100%', flexGrow: 1, margin: '0 auto' }}
+                sx={{ minWidth: '100%', justifyContent: 'center', marginBottom: '1em'}}
             >
                 {/* {steps.map((label) => (
                     <Step key={label}>
@@ -167,7 +167,7 @@ const TripForm = () => {
                     )}
                     {activeStep === 1 && (
                         <>
-                            <Typography variant="h6">Step 2</Typography>
+                            {/* <Typography variant="h6">Step 2</Typography> */}
                             <TextField
                                 label="Title"
                                 name="title"
@@ -188,7 +188,7 @@ const TripForm = () => {
                     )}
                     {activeStep === 2 && (
                         <>
-                            <Typography variant="h6">Step 3</Typography>
+                            {/* <Typography variant="h6">Step 3</Typography> */}
                             <div>
                                 {
                                     hobbies.map((hobby) => {
@@ -204,7 +204,7 @@ const TripForm = () => {
                     )}
                     {activeStep === 3 && (
                         <>
-                            <Typography variant="h6">Step 4</Typography>
+                            {/* <Typography variant="h6">Step 4</Typography> */}
                             <ImageList  cols={3} rowHeight={100}>
                                 {itemData.map((item) => (
                                     <ImageListItem key={item.img}>
@@ -253,10 +253,27 @@ const TripForm = () => {
                     )}
                 </Grid>
                 <Grid item xs={12}>
+                {activeStep > 0 && (
+                        <Button
+                            variant="contained"
+                            color="secondary"
+                            onClick={handleBack}
+                            
+                            
+                sx={{ // Set minimum width
+                borderRadius: '20px',}}
+                        >
+                            Back
+                        </Button>
+                    )}
                     {activeStep !== steps.length - 1 && (<Button
                         variant="contained"
                         color="primary"
                         onClick={handleNext}
+                       
+                sx={{ // Set minimum width
+                borderRadius: '20px',
+                marginLeft: 8 }}
                     >
                         Next
                     </Button>)}
@@ -266,19 +283,14 @@ const TripForm = () => {
                         variant="contained"
                         color="primary"
                         onClick={handleSubmit}
+                        sx={{ // Set minimum width
+                            borderRadius: '20px',
+                            marginLeft: 8
+                        }}
                     >
                         Submit
                     </Button>)}
-                    {activeStep > 0 && (
-                        <Button
-                            variant="contained"
-                            color="secondary"
-                            onClick={handleBack}
-                            sx={{ marginLeft: 8 }}
-                        >
-                            Back
-                        </Button>
-                    )}
+                    
                 </Grid>
             </Grid>
         </Container>

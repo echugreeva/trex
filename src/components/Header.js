@@ -6,14 +6,14 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-import AccountCircle from '@mui/icons-material/AccountCircle';
-import Switch from '@mui/material/Switch';
+import AccountCircleSharpIcon from '@mui/icons-material/AccountCircleSharp';import Switch from '@mui/material/Switch';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormGroup from '@mui/material/FormGroup';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
-import TravelExploreIcon from '@mui/icons-material/TravelExplore';
-import ChatIcon from '@mui/icons-material/Chat';
+import TravelExploreSharpIcon from '@mui/icons-material/TravelExploreSharp';
+import ChatBubbleOutlineSharpIcon from '@mui/icons-material/ChatBubbleOutlineSharp';
+
 
 
 const Header = () => {
@@ -34,20 +34,8 @@ const Header = () => {
     //   };
 
     return (
-        <Box  sx={{ flexGrow: 1 }}>
-            <FormGroup>
-                <FormControlLabel
-                    control={
-                        <Switch
-                            checked={auth}
-                            onChange={handleChange}
-                            aria-label="login switch"
-                        />
-                    }
-                    label={auth ? 'Logout' : 'Login'}
-                />
-            </FormGroup>
-            <AppBar position="static" sx={{backgroundColor:'white'}}>
+        
+            <AppBar position="static"  elevation={0} color ='info'sx={{ backgroundColor: "white",width:'100%', border:'1px solid'}}>
                 <Toolbar sx={{ display: 'flex', justifyContent: "space-around", width: '100%' }}>
                     <IconButton
                     
@@ -55,19 +43,19 @@ const Header = () => {
                         aria-label="account of current user"
                         aria-controls="menu-appbar"
                         aria-haspopup="true"
-                        color={(window.location.pathname==='/profile')?'error':"white"}
+                        color={(window.location.pathname==='/profile')?'success':'white'}
                         onClick={
                             () => {
                                 navigate('/profile')
                             }
                         }
                     >
-                        <AccountCircle sx={{ fontSize: 35 }}  />
+                        <AccountCircleSharpIcon sx={{ fontSize: 40 }}  />
                     </IconButton>
                     <IconButton
                         size="large"
                         edge="start"
-                        color={(window.location.pathname==='/home')?'error':"white"}
+                        color={(window.location.pathname==='/home')?'success':"white"}
                         aria-label="menu"
                         sx={{ mr: 2 }}
                         onClick={
@@ -76,12 +64,12 @@ const Header = () => {
                             }
                         }
                     >
-                        <TravelExploreIcon sx={{ fontSize: 35 }} />
+                        <TravelExploreSharpIcon sx={{ fontSize: 40 }} />
                     </IconButton>
                     <IconButton
                         size="large"
                         edge="start"
-                        color={(window.location.pathname.includes('/chats'))?'error':"white"}
+                        color={(window.location.pathname.includes('/chats'))?'success':"white"}
                         aria-label="menu"
                         sx={{ mr: 2 }}
                         onClick={
@@ -90,7 +78,7 @@ const Header = () => {
                             }
                         }
                     >
-                        <ChatIcon sx={{ fontSize: 35 }}/>
+                        <ChatBubbleOutlineSharpIcon sx={{ fontSize: 40 }}/>
                     </IconButton>
 
 
@@ -99,7 +87,7 @@ const Header = () => {
 
                 </Toolbar>
             </AppBar>
-        </Box>
+        
     );
 }
 

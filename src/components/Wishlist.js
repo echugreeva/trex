@@ -11,6 +11,7 @@ import Divider from '@mui/material/Divider';
 import { getFromLocalStorage, addToLocalStorage } from "../helpers/localStorage";
 import trips from '../trips.json'
 
+
 const WishList = () => {
 
     //on click? open card with match/reject?

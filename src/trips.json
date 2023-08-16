@@ -7,7 +7,15 @@
         "date": "July 15, 2024 - July 22, 2024",
         "description": "Escape to the breathtaking beaches and crystal-clear waters of the Maldives. Enjoy a week of relaxation, water sports, and island exploration in luxurious overwater bungalows.",
         "image": ["https://images.pexels.com/photos/1287460/pexels-photo-1287460.jpeg?auto=compress&cs=tinysrgb&w=800", 
-        "https://images.pexels.com/photos/1320684/pexels-photo-1320684.jpeg?auto=compress&cs=tinysrgb&w=800"]
+        "https://images.pexels.com/photos/1320684/pexels-photo-1320684.jpeg?auto=compress&cs=tinysrgb&w=800"],
+        "participants":[],
+        "messages": [{
+          "time":"",
+          "userId": "",
+          "userName":"admin",
+          "message": "welcome to your trip chat"
+
+        }]
       },
       {
         "id": "2",
@@ -15,7 +23,15 @@
         "location": "Swiss Alps",
         "date": "January 10, 2025 - January 18, 2025",
         "description": "Embrace the winter wonderland of the Swiss Alps with this thrilling adventure trip. Ski and snowboard down powdery slopes, indulge in Swiss cuisine, and take in the stunning mountain views.",
-    "image":[ "https://images.pexels.com/photos/15964998/pexels-photo-15964998/free-photo-of-cold-snow-landscape-mountains.jpeg?auto=compress&cs=tinysrgb&w=800"]
+    "image":[ "https://images.pexels.com/photos/15964998/pexels-photo-15964998/free-photo-of-cold-snow-landscape-mountains.jpeg?auto=compress&cs=tinysrgb&w=800"],
+    "participants":[],
+    "messages": [{
+      "time":"",
+      "userId": "",
+      "userName":"admin",
+          "message": "welcome to your trip chat"
+
+    }]
       },
       {
         "id": "3",
@@ -26,7 +42,15 @@
         "image": ["https://images.pexels.com/photos/1530259/pexels-photo-1530259.jpeg?auto=compress&cs=tinysrgb&w=800", 
         "https://images.pexels.com/photos/1427581/pexels-photo-1427581.jpeg?auto=compress&cs=tinysrgb&w=800",
     "https://images.pexels.com/photos/1701595/pexels-photo-1701595.jpeg?auto=compress&cs=tinysrgb&w=800"
-    ]
+    ],
+    "participants":[],
+    "messages": [{
+      "time":"",
+      "userId": "",
+      "userName":"admin",
+          "message": "welcome to your trip chat"
+
+    }]
       },
       {
         "id": "4",
@@ -34,7 +58,15 @@
         "location": "Tanzania, Africa",
         "date": "September 3, 2024 - September 10, 2024",
         "description": "Witness the incredible wildlife of the Serengeti on an unforgettable safari adventure. Spot lions, elephants, giraffes, and more as you traverse the vast plains of Tanzania.",
-        "image": ["https://images.pexels.com/photos/259547/pexels-photo-259547.jpeg?auto=compress&cs=tinysrgb&w=800"]
+        "image": ["https://images.pexels.com/photos/259547/pexels-photo-259547.jpeg?auto=compress&cs=tinysrgb&w=800"],
+        "participants":[],
+        "messages": [{
+          "time":"",
+          "userId": "",
+          "userName":"admin",
+          "message": "welcome to your trip chat"
+
+        }]
       },
       {
         "id": "5",
@@ -42,7 +74,15 @@
         "location": "Tokyo, Bangkok, Singapore",
         "date": "November 12, 2024 - November 24, 2024",
         "description": "Satisfy your taste buds on this culinary journey through Tokyo, Bangkok, and Singapore. Experience a diverse range of Asian cuisines and street food delights.",
-        "image": ["https://images.pexels.com/photos/1031780/pexels-photo-1031780.jpeg?auto=compress&cs=tinysrgb&w=800"]
+        "image": ["https://images.pexels.com/photos/1031780/pexels-photo-1031780.jpeg?auto=compress&cs=tinysrgb&w=800"],
+        "participants":[],
+        "messages": [{
+          "time":"",
+          "userId": "",
+          "userName":"admin",
+          "message": "welcome to your trip chat"
+
+        }]
       },
       {
         "id": "6",
@@ -50,7 +90,15 @@
         "location": "Brazil",
         "date": "May 1, 2025 - May 10, 2025",
         "description": "Immerse yourself in the unparalleled biodiversity of the Amazon Rainforest. Hike through lush jungles, spot exotic wildlife, and learn about indigenous cultures.",
-        "image": ["https://images.pexels.com/photos/325807/pexels-photo-325807.jpeg?auto=compress&cs=tinysrgb&w=800"]
+        "image": ["https://images.pexels.com/photos/325807/pexels-photo-325807.jpeg?auto=compress&cs=tinysrgb&w=800"],
+        "participants":[],
+        "messages": [{
+          "time":"",
+          "userId": "",
+          "userName":"admin",
+          "message": "welcome to your trip chat"
+
+        }]
       },
       {
         "id": "7",
@@ -58,7 +106,15 @@
         "location": "Los Angeles, San Francisco, Napa Valley",
         "date": "August 20, 2024 - August 30, 2024",
         "description": "Hit the open road along California's scenic coast. Explore vibrant cities, visit famous landmarks, and taste exquisite wines in Napa Valley.",
-        "image": ["https://images.pexels.com/photos/3605316/pexels-photo-3605316.jpeg?auto=compress&cs=tinysrgb&w=800"]
+        "image": ["https://images.pexels.com/photos/3605316/pexels-photo-3605316.jpeg?auto=compress&cs=tinysrgb&w=800"],
+        "participants":[],
+        "messages": [{
+          "time":"",
+          "userId": "",
+          "userName":"admin",
+          "message": "welcome to your trip chat"
+
+        }]
       }
     ]
   }
