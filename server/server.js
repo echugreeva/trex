@@ -10,8 +10,8 @@ const app = express();
 const router = express.Router();
 const __dirname = path.resolve();
 
-app.use(cors({credentials:true, origin:'http://localhost:3000'}));
-// app.use(cors({credentials:true, origin:'https://lenachu-portfolio.herokuapp.com/'}));
+// app.use(cors({credentials:true, origin:'http://localhost:3000'}));
+app.use(cors({credentials:true, origin:'https://trex-e2rh.onrender.com/'}));
 
 app.use(cookieParser());
 
