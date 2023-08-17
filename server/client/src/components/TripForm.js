@@ -85,7 +85,8 @@ const itemData = [
 
 
 const TripForm = () => {
-    const [matchListIds, setIds] = useState(getFromLocalStorage('matchedTrips'))
+    
+    // const lastId = getFromLocalStorage('matchedTrips').pop()[id]
     countries.registerLocale(enLocale);
     const countryObj = countries.getNames("en", { select: "official" });
 
@@ -96,7 +97,7 @@ const TripForm = () => {
         };
     });
     const [activeStep, setActiveStep] = useState(0);
-    const [formData, setFormData] = useState({});
+    const [formData, setFormData] = useState({id:'33'});
     const [selectedCountry, setSelectedCountry] = useState("pick destination");
     const navigate = useNavigate()
 
@@ -117,7 +118,7 @@ const TripForm = () => {
         });
     };
     const handleSubmit = () => {
-
+        addToLocalStorage('newTrips', formData)
         navigate('/chats')
     }
     return (
@@ -142,7 +143,7 @@ const TripForm = () => {
                         <>
                             <Select
                                 label="Trip Location"
-                                name="Trip-location"
+                                name="location"
                                 fullWidth
                                 margin="normal"
                                 value={selectedCountry}
@@ -173,7 +174,7 @@ const TripForm = () => {
                             {/* <Typography variant="h6">Step 2</Typography> */}
                             <TextField
                                 label="Title"
-                                name="title"
+                                name="trip_title"
                                 onChange={handleChange}
                                 fullWidth
                                 margin="normal"
@@ -196,7 +197,7 @@ const TripForm = () => {
                                 {
                                     hobbies.map((hobby) => {
                                         return (
-                                            <Checkbox icon={<Chip variant="outlined" label={hobby} />} checkedIcon={<Chip variant="outlined" color="info" label={hobby} />} />
+                                            <Checkbox name='interests' icon={<Chip variant="outlined" label={hobby} />} checkedIcon={<Chip variant="outlined" color="info" label={hobby} />} />
                                         )
                                     })
                                 }

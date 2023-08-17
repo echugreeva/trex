@@ -17,6 +17,7 @@ import {
 } from "@mui/material";
 import countries from "i18n-iso-countries";
 import enLocale from "i18n-iso-countries/langs/en.json";
+import { getFromLocalStorage, addToLocalStorage } from "../helpers/localStorage";
 
 const steps = ["Step 1", "Step 2", "Step 3", "Step 4"];
 const hobbies = ['Adventure', 'Hiking', 'Beach', 'Mountains', 'Forest', 'City', 'Nature', 'History', 'Art', 'Music', 'Food', 'Nightlife', 'Backpacking', 'Culture', 'Luxury', 'Yoga', 'Wine', 'Meditation'
@@ -57,6 +58,8 @@ const OnboardingForm = () => {
         });
     };
     const handleSubmit = () => {
+        addToLocalStorage('newUser', formData)
+        setFormData({})
         navigate('/home')
     }
     return (
@@ -66,7 +69,7 @@ const OnboardingForm = () => {
                 activeStep={activeStep}
                 steps={4}
                 position="static"
-                sx={{ minWidth: '100%', flexGrow: 1, margin: '0 auto' }}
+                sx={{ minWidth: '100%', justifyContent: 'center', marginBottom: '1em'}}
                 >
                 {/* {steps.map((label) => (
                     <Step key={label}>
@@ -79,7 +82,7 @@ const OnboardingForm = () => {
                 <Grid item xs={12}>
                     {activeStep === 0 && (
                         <>
-                            <Typography variant="h6">Step 1</Typography>
+                            {/* <Typography variant="h6">Step 1</Typography> */}
                             <TextField
                                 label="Email"
                                 name="email"
@@ -88,6 +91,7 @@ const OnboardingForm = () => {
                                 margin="normal"
                             />
                             <TextField
+                                type="password"
                                 label="Password"
                                 name="password"
                                 onChange={handleChange}
@@ -98,7 +102,7 @@ const OnboardingForm = () => {
                     )}
                     {activeStep === 1 && (
                         <>
-                            <Typography variant="h6">Step 2</Typography>
+                            {/* <Typography variant="h6">Step 2</Typography> */}
                             <TextField
                                 label="Name"
                                 name="name"
@@ -139,12 +143,12 @@ const OnboardingForm = () => {
                     )}
                     {activeStep === 2 && (
                         <>
-                            <Typography variant="h6">Step 3</Typography>
+                            {/* <Typography variant="h6">Step 3</Typography> */}
                             <div>
                                 {
                                     hobbies.map((hobby) => {
                                         return (
-                                            <Checkbox icon={<Chip variant="outlined" label={hobby} />} checkedIcon={<Chip variant="outlined" color="info" label={hobby} />} />
+                                            <Checkbox name="interests" icon={<Chip variant="outlined" label={hobby} />} checkedIcon={<Chip variant="outlined" color="info" label={hobby} />} />
                                         )
                                     })
                                 }
@@ -155,7 +159,7 @@ const OnboardingForm = () => {
                     )}
                     {activeStep === 3 && (
                         <>
-                            <Typography variant="h6">Step 4</Typography>
+                            {/* <Typography variant="h6">Step 4</Typography> */}
                             <TextField
                                 label="Bio"
                                 name="bio"
@@ -171,32 +175,44 @@ const OnboardingForm = () => {
                     )}
                 </Grid>
                 <Grid item xs={12}>
-                {activeStep !== steps.length - 1&& (<Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleNext}
-                   >
-                        Next
-                    </Button>)}
-                    
-                    
-                    {activeStep === steps.length - 1&& (<Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleSubmit}
-                   >
-                    Submit
-                    </Button>)}
-                    {activeStep > 0 && (
+                {activeStep > 0 && (
                         <Button
                             variant="contained"
                             color="secondary"
                             onClick={handleBack}
-                            sx={{ marginLeft: 8 }}
+                            
+                            
+                sx={{ // Set minimum width
+                borderRadius: '20px',}}
                         >
                             Back
                         </Button>
                     )}
+                    {activeStep !== steps.length - 1 && (<Button
+                        variant="contained"
+                        color="primary"
+                        onClick={handleNext}
+                       
+                sx={{ // Set minimum width
+                borderRadius: '20px',
+                marginLeft: 8 }}
+                    >
+                        Next
+                    </Button>)}
+
+
+                    {activeStep === steps.length - 1 && (<Button
+                        variant="contained"
+                        color="primary"
+                        onClick={handleSubmit}
+                        sx={{ // Set minimum width
+                            borderRadius: '20px',
+                            marginLeft: 8
+                        }}
+                    >
+                        Submit
+                    </Button>)}
+                    
                 </Grid>
             </Grid>
         </Container>
