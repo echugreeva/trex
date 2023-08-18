@@ -7,7 +7,10 @@ import ChatWishListScreen from './components/chat/ChatWishListScreen'
 import Header from './components/Header'
 import SingleChat from './components/chat/SingleChat'
 import TripForm from "./components/TripForm";
-import Profile from './components/Profile'
+import Profile from './components/Profile';
+import Login from "./components/Login";
+import Register from "./components/Register";
+import Reset from "./components/Reset";
 import { ThemeProvider } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 import {CssBaseline} from '@mui/material'
@@ -67,7 +70,10 @@ function App() {
           <Header />
           <Container sx={{ flex: 1, overflowY: 'auto',  border:'1px solid'}} disableGutters >
             <Routes>
-              <Route path='/' element={<OnboardingForm />} />
+              <Route path='/onboarding' element={<OnboardingForm />} />
+              <Route path='/' element={<Login/>} />
+              <Route path='/reset' element={<Reset/>} />
+              <Route path='/register' element={<Register/>} />
               <Route path='/home' element={<Home />} />
               <Route path='/chats' element={<ChatWishListScreen />} />
               <Route path='/settings' element={<Home />} />

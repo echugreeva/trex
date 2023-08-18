@@ -18,14 +18,18 @@ import {
 import countries from "i18n-iso-countries";
 import enLocale from "i18n-iso-countries/langs/en.json";
 import { getFromLocalStorage, addToLocalStorage } from "../helpers/localStorage";
+import { auth, db } from '../config/firebase'
+import { collection, addDoc, Timestamp, doc, updateDoc,getDocs, query, where}  from 'firebase/firestore'
 
-const steps = ["Step 1", "Step 2", "Step 3", "Step 4"];
+const steps = ["Step 1", "Step 2", "Step 3"];
 const hobbies = ['Adventure', 'Hiking', 'Beach', 'Mountains', 'Forest', 'City', 'Nature', 'History', 'Art', 'Music', 'Food', 'Nightlife', 'Backpacking', 'Culture', 'Luxury', 'Yoga', 'Wine', 'Meditation'
 ]
 
 //in the future get all input fields and step in props and generate form as a function
 
 const OnboardingForm = () => {
+    const user = auth.currentUser;
+
 
     countries.registerLocale(enLocale);
     const countryObj = countries.getNames("en", { select: "official" });
@@ -40,7 +44,7 @@ const OnboardingForm = () => {
     const [formData, setFormData] = useState({});
     const [selectedCountry, setSelectedCountry] = useState("");
     const navigate = useNavigate()
-    
+
     const selectCountryHandler = (value) => setSelectedCountry(value);
 
     const handleNext = () => {
@@ -57,11 +61,70 @@ const OnboardingForm = () => {
             [event.target.name]: event.target.value,
         });
     };
-    const handleSubmit = () => {
-        addToLocalStorage('newUser', formData)
-        setFormData({})
-        navigate('/home')
-    }
+    // const handleSubmit = () => {
+    //     addToLocalStorage('newUser', formData)
+    //     setFormData({})
+    //     navigate('/home')
+    // }
+
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+            if(user){
+                const userId = user.uid;
+                // console.log(user)
+                // console.log('User ID:', userId);
+                const q = query(collection(db, 'users'));
+    
+               
+                try {
+    
+                    const querySnapshot = await getDocs(q);
+                    querySnapshot.forEach(async (docu) => {
+                        if (docu.data().uid == userId){
+                            const userDocRef = doc(db, 'users', docu.id);
+                            try {
+                              await updateDoc(userDocRef, {
+                                ...formData,
+                                created: Timestamp.now()
+                              });
+                              console.log(`Document ${docu.id} updated successfully.`);
+                            } catch (err) {
+                              console.error(`Error updating document ${docu.id}:`, err);
+                            }
+                          }
+                        }
+                    );
+                    // await updateDoc(userDocRef, {
+                    //     ...formData,
+                    //   created: Timestamp.now()
+                    // })
+                   
+                  } catch (err) {
+                    alert(err)
+                  }
+    
+              
+                // Now you can use the userId to log user ads data as shown in the previous example.
+            //   } else {
+            //     // No user is signed in
+            //     console.log('No user is signed in.');
+            //   }
+            // try {
+            //     await addDoc(collection(db, 'users'), {...formData, created: Timestamp.now()
+            //     })
+            //     setFormData({})
+            //     navigate('/home')
+            //     // onClose()
+            // } catch (err) {
+            //     alert(err)
+            // }
+        }
+
+            }
+            // User is signed in, you can get the user ID
+           
+
+
     return (
         <Container maxWidth="sm" sx={{ mt: 8 }}>
             <MobileStepper
@@ -69,38 +132,18 @@ const OnboardingForm = () => {
                 activeStep={activeStep}
                 steps={4}
                 position="static"
-                sx={{ minWidth: '100%', justifyContent: 'center', marginBottom: '1em'}}
-                >
+                sx={{ minWidth: '100%', justifyContent: 'center', marginBottom: '1em' }}
+            >
                 {/* {steps.map((label) => (
                     <Step key={label}>
                         <StepLabel>{label}</StepLabel>
                     </Step>
                 ))} */}
-                
+
             </MobileStepper>
             <Grid container direction="column" alignItems="center" spacing={2}>
                 <Grid item xs={12}>
                     {activeStep === 0 && (
-                        <>
-                            {/* <Typography variant="h6">Step 1</Typography> */}
-                            <TextField
-                                label="Email"
-                                name="email"
-                                onChange={handleChange}
-                                fullWidth
-                                margin="normal"
-                            />
-                            <TextField
-                                type="password"
-                                label="Password"
-                                name="password"
-                                onChange={handleChange}
-                                fullWidth
-                                margin="normal"
-                            />
-                        </>
-                    )}
-                    {activeStep === 1 && (
                         <>
                             {/* <Typography variant="h6">Step 2</Typography> */}
                             <TextField
@@ -141,7 +184,7 @@ const OnboardingForm = () => {
 
                         </>
                     )}
-                    {activeStep === 2 && (
+                    {activeStep === 1 && (
                         <>
                             {/* <Typography variant="h6">Step 3</Typography> */}
                             <div>
@@ -157,7 +200,7 @@ const OnboardingForm = () => {
                             </div>
                         </>
                     )}
-                    {activeStep === 3 && (
+                    {activeStep === 2 && (
                         <>
                             {/* <Typography variant="h6">Step 4</Typography> */}
                             <TextField
@@ -175,15 +218,16 @@ const OnboardingForm = () => {
                     )}
                 </Grid>
                 <Grid item xs={12}>
-                {activeStep > 0 && (
+                    {activeStep > 0 && (
                         <Button
                             variant="contained"
                             color="secondary"
                             onClick={handleBack}
-                            
-                            
-                sx={{ // Set minimum width
-                borderRadius: '20px',}}
+
+
+                            sx={{ // Set minimum width
+                                borderRadius: '20px',
+                            }}
                         >
                             Back
                         </Button>
@@ -192,10 +236,11 @@ const OnboardingForm = () => {
                         variant="contained"
                         color="primary"
                         onClick={handleNext}
-                       
-                sx={{ // Set minimum width
-                borderRadius: '20px',
-                marginLeft: 8 }}
+
+                        sx={{ // Set minimum width
+                            borderRadius: '20px',
+                            marginLeft: 8
+                        }}
                     >
                         Next
                     </Button>)}
@@ -212,7 +257,7 @@ const OnboardingForm = () => {
                     >
                         Submit
                     </Button>)}
-                    
+
                 </Grid>
             </Grid>
         </Container>
