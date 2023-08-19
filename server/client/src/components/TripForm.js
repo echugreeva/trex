@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { addDoc, collection } from "firebase/firestore";
 import dayjs from 'dayjs';
 import {
     Container,
@@ -26,6 +27,9 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import { getFromLocalStorage, addToLocalStorage } from "../helpers/localStorage";
+import { auth, db } from '../config/firebase'
+
+
 
 const steps = ["Step 1", "Step 2", "Step 3", "Step 4"];
 const hobbies = ['Adventure', 'Hiking', 'Beach', 'Mountains', 'Forest', 'City', 'Nature', 'History', 'Art', 'Music', 'Food', 'Nightlife', 'Backpacking', 'Culture', 'Luxury', 'Yoga', 'Wine', 'Meditation'
@@ -97,8 +101,8 @@ const TripForm = () => {
         };
     });
     const [activeStep, setActiveStep] = useState(0);
-    const [formData, setFormData] = useState({id:'33'});
-    const [selectedCountry, setSelectedCountry] = useState("pick destination");
+    const [formData, setFormData] = useState({});
+    const [selectedCountry, setSelectedCountry] = useState("US");
     const navigate = useNavigate()
 
     const selectCountryHandler = (value) => setSelectedCountry(value);
@@ -117,8 +121,17 @@ const TripForm = () => {
             [event.target.name]: event.target.value,
         });
     };
+
+    const addTripToDB = async()=> {
+        const docRef = await addDoc(collection(db, "trips"), {
+            ...formData
+        });
+    }
+
     const handleSubmit = () => {
+
         addToLocalStorage('newTrips', formData)
+        addTripToDB()
         navigate('/chats')
     }
     return (

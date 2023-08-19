@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import trips from '../trips.json'
 import { styled } from '@mui/material/styles';
@@ -26,6 +26,10 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import InfoIcon from '@mui/icons-material/Info';
 import { getFromLocalStorage, addToLocalStorage } from "../helpers/localStorage";
+import { getDocs, collection } from "firebase/firestore";
+import { auth, db } from '../config/firebase'
+
+
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -53,15 +57,29 @@ const ImageCard = () => {
 
 
     // ]
+    const fetchTrips = async () => {
+        const querySnapshot = await getDocs(collection(db, "trips"));
+        querySnapshot.forEach((doc) => {
+            // doc.data() is never undefined for query doc snapshots
+            console.log(doc.id, " => ", doc.data());
+            setTrip(...tripToShow, doc.data())
+        });
+        console.log(tripToShow)
 
+    }
+    // 
     const [tripToShow, setTrip] = useState([...trips.trips])
     const [wishlist, setWishList] = useState([])
     const [reject, setReject] = useState([])
     const [matchReq, setMatchReq] = useState([])
     const [imgIndex, setIndex] = useState(0)
 
+    // useEffect(()=>{
+    //     fetchTrips()
+    // },[])
+
     const scrollImg = (direction) => {
-        let length = tripToShow[0].image.length
+        let length = tripToShow[0].images.length
         console.log(length)
         console.log(imgIndex)
         if (direction == 'forward' && imgIndex < length - 1) {
@@ -102,14 +120,14 @@ const ImageCard = () => {
     const handleReject = () => {
         setReject([...reject, tripToShow[0].id])
         tripEvaluate()
-        addToLocalStorage('rejectedTrips',reject )
+        addToLocalStorage('rejectedTrips', reject)
 
     }
 
     const handleAddToWishList = () => {
         setWishList([...wishlist, tripToShow[0].id])
         tripEvaluate()
-        addToLocalStorage('wishListTrips',wishlist )
+        addToLocalStorage('wishListTrips', wishlist)
 
 
     }
@@ -118,15 +136,15 @@ const ImageCard = () => {
         //req logic
         setMatchReq([...matchReq, tripToShow[0].id])
         tripEvaluate()
-        addToLocalStorage('matchedTrips',matchReq )
+        addToLocalStorage('matchedTrips', matchReq)
     }
     console.log(tripToShow)
     console.log(imgIndex)
-    if (tripToShow.length<1) {
+    if (tripToShow.length < 1) {
         return (
             <Typography>
                 No new trips available at the moment.
-                Come back later 
+                Come back later
                 Or Create your own trip
             </Typography>
         )
@@ -136,13 +154,13 @@ const ImageCard = () => {
 
         return (
 
-            <Card sx={{ height: '100%',overflowY: 'auto'}}>
+            <Card sx={{ height: '100%', overflowY: 'auto' }}>
                 <CardContent sx={{
                     display: 'flex',
                     position: 'relative',
                     justifyContent: 'space-between',
                     height: '85%',
-                    backgroundImage: `url(${tripToShow[0].image[imgIndex]})`,
+                    backgroundImage: `url(${tripToShow[0].images[imgIndex]})`,
                     backgroundPosition: "center",
                     backgroundSize: "cover",
                     backgroundRepeat: "no-repeat",
@@ -196,7 +214,7 @@ const ImageCard = () => {
 
                         }}>
 
-                            {tripToShow[0].date}
+                            {/* {tripToShow[0].date} */}
 
                         </Typography>
                         <ExpandMore
@@ -220,9 +238,6 @@ const ImageCard = () => {
                     <CardContent>
                         <Typography paragraph>Trip details:</Typography>
                         <Typography paragraph>
-                            More details
-                        </Typography>
-                        <Typography paragraph>
                             {tripToShow[0].description}
                         </Typography>
 
@@ -245,7 +260,7 @@ const ImageCard = () => {
                     <IconButton aria-label="add to intresting" onClick={() => { handleMatchReq() }}>
                         <FavoriteIcon color='success' sx={{ fontSize: 40 }} />
                     </IconButton>
-                    
+
 
 
 

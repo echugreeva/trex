@@ -25,7 +25,7 @@ const Profile = () => {
                         minWidth: '40%', // Set minimum width
                         borderRadius: '20px',
                     }}
-                    onClick={() => { navigate('/newtrip') }}
+                    onClick={() => { navigate('/settings') }}
                 >My settings</Button>
                 <Button variant="contained"
                     sx={{

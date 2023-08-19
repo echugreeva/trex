@@ -1,4 +1,5 @@
 // Import the functions you need from the SDKs you need
+import { useNavigate } from "react-router-dom";
 import { initializeApp } from "firebase/app";
 import {
 
@@ -29,14 +30,18 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+
 const logInWithEmailAndPassword = async (email, password) => {
   try {
     const res = await signInWithEmailAndPassword(auth, email, password);
     
     sessionStorage.setItem('Auth Token', res._tokenResponse.refreshToken)
+    
   } catch (err) {
+    
     console.error(err);
     alert(err.message);
+
   }
 }
 

@@ -55,7 +55,11 @@ const Login = () => {
                 variant='contained'
                 onClick={() => {
                     logInWithEmailAndPassword(formData.email, formData.password)
-                    navigate('/home')
+                    //add condition not to redirect
+                    if(auth){
+                        navigate('/home')
+                    }
+                    
                 }}
             >Login</Button>
             <div>
