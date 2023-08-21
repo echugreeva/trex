@@ -14,7 +14,7 @@ import Reset from "./components/Reset";
 
 import { ThemeProvider } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
-import {CssBaseline} from '@mui/material'
+import { CssBaseline } from '@mui/material'
 import UserSettings from "./components/UserSettings";
 
 const theme = createTheme(
@@ -65,25 +65,27 @@ function App() {
   return (
     <BrowserRouter>
       <ThemeProvider theme={theme}>
-        <Container disableGutters maxWidth="xs" sx={{
-          display: 'flex', flexDirection: 'column', height: '100vh', border:'1px solid'
-        }} >
-          <CssBaseline/>
-          <Header />
-          <Container sx={{ flex: 1, overflowY: 'auto',  border:'1px solid'}} disableGutters >
-            <Routes>
-              <Route path='/onboarding' element={<OnboardingForm />} />
-              <Route path='settings'element={<UserSettings />} />
-              <Route path='/' element={<Login/>} />
-              <Route path='/reset' element={<Reset/>} />
-              <Route path='/register' element={<Register/>} />
-              <Route path='/home' element={<Home />} />
-              <Route path='/chats' element={<ChatWishListScreen />} />
-              <Route path='/settings' element={<Home />} />
-              <Route path="/chats/:person" element={<SingleChat />} />
-              <Route path="/newtrip" element={<TripForm />} />
-              <Route path='/profile' element={<Profile />} />
-            </Routes>
+        <Container disableGutters maxWidth="xs">
+          <Container disableGutters maxWidth="xs" sx={{
+            display: 'flex', flexDirection: 'column', height: '100vh', border: '1px solid'
+          }} >
+            <CssBaseline />
+            <Header />
+            <Container sx={{ flex: 1, overflowY: 'auto', border: '1px solid' }} disableGutters >
+              <Routes>
+                <Route path='/onboarding' element={<OnboardingForm />} />
+                <Route path='settings' element={<UserSettings />} />
+                <Route path='/' element={<Login />} />
+                <Route path='/reset' element={<Reset />} />
+                <Route path='/register' element={<Register />} />
+                <Route path='/home' element={<Home />} />
+                <Route path='/chats' element={<ChatWishListScreen />} />
+                <Route path='/settings' element={<Home />} />
+                <Route path="/chats/:person" element={<SingleChat />} />
+                <Route path="/newtrip" element={<TripForm />} />
+                <Route path='/profile' element={<Profile />} />
+              </Routes>
+            </Container>
           </Container>
         </Container>
       </ThemeProvider>

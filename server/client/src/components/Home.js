@@ -8,6 +8,7 @@ import Container from '@mui/material/Container';
 
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db, logout } from '../config/firebase';
+import ErrorBoundary from "./ErrorBoundary";
 
 const Home = () => {
     const [user, loading, error] = useAuthState(auth)
@@ -28,8 +29,9 @@ const Home = () => {
         if (!user) return navigate("/");
       }, [user, loading]);
     return(
+        <ErrorBoundary><ImageCard/></ErrorBoundary>
     
-        <ImageCard/>
+        
     )
 }
 

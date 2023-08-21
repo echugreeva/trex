@@ -6,18 +6,17 @@ import { Box, Stack, Button } from '@mui/material'
 const Profile = () => {
     const navigate = useNavigate()
     return (
-        <Box
-            sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                height: '100vh',
-                // marginTop: '2em',
-                // backgroundColor: 'rgba(0, 0, 0, 0.2)',
-                // backgroundImage: "url(https://img.freepik.com/premium-photo/generative-ai-illustration-cool-trendy-collage-summer-beach-handmade-scrapbook-paper-with-vibrant-colors_58460-14279.jpg?w=740)",
-                // backgroundPosition: 'center',
-                // backgroundRepeat: 'no-repeat',
-                // backgroundSize: 'cover',
-            }}>
+        // <Box
+        //     sx={{
+        //         display: 'flex',
+        //         flexDirection: 'column',
+        //         // marginTop: '2em',
+        //         // backgroundColor: 'rgba(0, 0, 0, 0.2)',
+        //         // backgroundImage: "url(https://img.freepik.com/premium-photo/generative-ai-illustration-cool-trendy-collage-summer-beach-handmade-scrapbook-paper-with-vibrant-colors_58460-14279.jpg?w=740)",
+        //         // backgroundPosition: 'center',
+        //         // backgroundRepeat: 'no-repeat',
+        //         // backgroundSize: 'cover',
+        //     }}>
             <Stack spacing={2} direction="column" alignItems="center"
                 justifyContent="center" p={2}  >
                 <Button variant="outlined" size="large" color='secondary'
@@ -38,7 +37,7 @@ const Profile = () => {
 
 
 
-        </Box>
+        // </Box>
     )
 }
 

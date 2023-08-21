@@ -26,8 +26,9 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import InfoIcon from '@mui/icons-material/Info';
 import { getFromLocalStorage, addToLocalStorage } from "../helpers/localStorage";
-import { getDocs, collection } from "firebase/firestore";
+import { getDocs, collection, query, updateDoc,doc } from "firebase/firestore";
 import { auth, db } from '../config/firebase'
+import ErrorBoundary from "./ErrorBoundary";
 
 
 
@@ -58,28 +59,41 @@ const ImageCard = () => {
 
     // ]
     const fetchTrips = async () => {
-        const querySnapshot = await getDocs(collection(db, "trips"));
-        querySnapshot.forEach((doc) => {
-            // doc.data() is never undefined for query doc snapshots
-            console.log(doc.id, " => ", doc.data());
-            setTrip(...tripToShow, doc.data())
+            const querySnapshot = await getDocs(query(collection(db, "trips")));
+            const myAr = []
+            querySnapshot.forEach((doc) => {
+                // doc.data() is never undefined for query doc snapshots
+                console.log(doc.id, " => ", doc.data());
+                let obj = { id: doc.id, ...doc.data() }
+                myAr.push(obj)
+                if('reject' in doc.data()){
+                    setReject([...reject, doc.data().reject])
+                }
+                if('wishlist'in doc.data()){
+                    setWishList([...wishlist,doc.data().wishlist])
+                }
+
         });
+        setTrip(myAr)
         console.log(tripToShow)
+        
 
     }
     // 
-    const [tripToShow, setTrip] = useState([...trips.trips])
+    const [tripToShow, setTrip] = useState([])
+    const [fbTrips, setFBTrips] = useState([...trips.trips])
     const [wishlist, setWishList] = useState([])
     const [reject, setReject] = useState([])
     const [matchReq, setMatchReq] = useState([])
     const [imgIndex, setIndex] = useState(0)
-
-    // useEffect(()=>{
-    //     fetchTrips()
-    // },[])
+    
+    useEffect(() => {
+        fetchTrips()
+    }, [])
 
     const scrollImg = (direction) => {
-        let length = tripToShow[0].images.length
+        let length = tripToShow[0].image.length
+        
         console.log(length)
         console.log(imgIndex)
         if (direction == 'forward' && imgIndex < length - 1) {
@@ -117,29 +131,114 @@ const ImageCard = () => {
         setIndex(0)
     }
 
-    const handleReject = () => {
+    const handleReject = async() => {
         setReject([...reject, tripToShow[0].id])
+
         tripEvaluate()
         addToLocalStorage('rejectedTrips', reject)
+        const q = query(collection(db, 'users'));
+    
+               
+                try {
+    
+                    const querySnapshot = await getDocs(q);
+                    querySnapshot.forEach(async (docu) => {
+                        if (docu.data().uid == auth.currentUser.uid){
+                            const userDocRef = doc(db, 'users', docu.id);
+                            try {
+                              await updateDoc(userDocRef, {
+                                reject: reject
+                              });
+                              console.log(`Document ${docu.id} updated successfully.`);
+                            } catch (err) {
+                              console.error(`Error updating document ${docu.id}:`, err);
+                            }
+                          }
+                        }
+                    );
+                
+                  } catch (err) {
+                    alert(err)
+                  }
 
-    }
+            }
 
-    const handleAddToWishList = () => {
+    
+
+    const handleAddToWishList = async() => {
         setWishList([...wishlist, tripToShow[0].id])
         tripEvaluate()
         addToLocalStorage('wishListTrips', wishlist)
+        const q = query(collection(db, 'users'));
+    
+               
+                try {
+    
+                    const querySnapshot = await getDocs(q);
+                    querySnapshot.forEach(async (docu) => {
+                        if (docu.data().uid == auth.currentUser.uid){
+                            const userDocRef = doc(db, 'users', docu.id);
+                            try {
+                              await updateDoc(userDocRef, {
+                                wishlist: wishlist
+                              });
+                              console.log(`Document ${docu.id} updated successfully.`);
+                            } catch (err) {
+                              console.error(`Error updating document ${docu.id}:`, err);
+                            }
+                          }
+                        }
+                    );
+                
+                  } catch (err) {
+                    alert(err)
+                  }
+
 
 
     }
 
-    const handleMatchReq = () => {
+    const handleMatchReq = async() => {
         //req logic
         setMatchReq([...matchReq, tripToShow[0].id])
         tripEvaluate()
         addToLocalStorage('matchedTrips', matchReq)
+        const q = query(collection(db, 'users'));
+        try {
+    
+            const querySnapshot = await getDocs(q);
+            querySnapshot.forEach(async (docu) => {
+                if (docu.data().uid == auth.currentUser.uid){
+                    const userDocRef = doc(db, 'users', docu.id);
+                    try {
+                      await updateDoc(userDocRef, {
+                        matched: matchReq
+                      });
+                      console.log(`Document ${docu.id} updated successfully.`);
+                    } catch (err) {
+                      console.error(`Error updating document ${docu.id}:`, err);
+                    }
+                  }
+                }
+            );
+        
+          } catch (err) {
+            alert(err)
+          }
     }
     console.log(tripToShow)
     console.log(imgIndex)
+    // let imgSrc = tripToShow[0].images[0]|| tripToShow[0].image[0]
+    if (!tripToShow) {
+        return (
+            <Typography>
+                No new trips available at the moment.
+                Come back later
+                Or Create your own trip
+            </Typography>
+        )
+
+    }
     if (tripToShow.length < 1) {
         return (
             <Typography>
@@ -160,7 +259,8 @@ const ImageCard = () => {
                     position: 'relative',
                     justifyContent: 'space-between',
                     height: '85%',
-                    backgroundImage: `url(${tripToShow[0].images[imgIndex]})`,
+                    backgroundImage:`url(${tripToShow[0].image[0]})`,
+                    // || `url(${tripToShow[0].images[0]})`,
                     backgroundPosition: "center",
                     backgroundSize: "cover",
                     backgroundRepeat: "no-repeat",

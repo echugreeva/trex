@@ -41,7 +41,7 @@ const SingleChat = () => {
   };
   if (messages) {
     return (
-      <Container spacing={2}>
+      <Container>
         <Typography p={2}>
           YOU JOINED {selectedTrip.trip_title} ON 08/21/2020
         </Typography>
@@ -59,9 +59,11 @@ const SingleChat = () => {
             <Box
               sx={{
                 display: "flex",
+                
                 justifyContent: isUser ? "flex-end" : "flex-start",
+                flexGrow: 1,
                 mb: 2,
-                maxHeight: '70%',
+                maxHeight: '60%',
                 overflowY: 'auto'
               }}
             >
@@ -73,7 +75,7 @@ const SingleChat = () => {
                   borderRadius: isUser ? "20px 20px 20px 5px" : "20px 20px 5px 20px",
                 }}
               >
-                <Box 
+                <Box
                   sx={{
                     display: "flex",
                     flexDirection: "row",
@@ -85,7 +87,7 @@ const SingleChat = () => {
                     alt={message.userName}
                     src={url}
                   />
-                  <Typography sx={{margin: '1em'}}>{message.userName}</Typography>
+                  <Typography sx={{ margin: '1em' }}>{message.userName}</Typography>
                 </Box>
 
                 <Typography className="chatScreen__text">{message.message}</Typography>
@@ -105,7 +107,9 @@ const SingleChat = () => {
         <Box sx={{
           backgroundColor: "background.default",
 
-          display: 'flex', flexDirection: 'row', marginBottom: '2em'
+          display: 'flex', flexDirection: 'row',
+          position: 'sticky',
+          bottom: 0,
         }}>
 
 
@@ -126,7 +130,7 @@ const SingleChat = () => {
             variant="contained"
             endIcon={<SendIcon />}
             onClick={handleSend}
-            sx={{marginLeft: '1em'}}
+            sx={{ marginLeft: '1em' }}
           >
 
           </Button>

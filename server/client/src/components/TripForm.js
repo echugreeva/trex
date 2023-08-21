@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, updateDoc } from "firebase/firestore";
 import dayjs from 'dayjs';
 import {
     Container,
@@ -123,9 +123,11 @@ const TripForm = () => {
     };
 
     const addTripToDB = async()=> {
-        const docRef = await addDoc(collection(db, "trips"), {
+        const docRef = await addDoc(collection(db, "trips"), {owner: auth.currentUser.uid,
             ...formData
-        });
+        
+              }
+        );
     }
 
     const handleSubmit = () => {
