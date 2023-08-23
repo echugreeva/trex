@@ -67,7 +67,7 @@ function App() {
       <ThemeProvider theme={theme}>
         <Container disableGutters maxWidth="xs">
           <Container disableGutters maxWidth="xs" sx={{
-            display: 'flex', flexDirection: 'column', height: '100vh', border: '1px solid'
+            display: 'flex', flexDirection: 'column', height: '95vh', border: '1px solid'
           }} >
             <CssBaseline />
             <Header />

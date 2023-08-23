@@ -28,21 +28,22 @@ const WishList = () => {
                
                 try {
     
-                    const querySnapshot = await getDocs(q);
-                    querySnapshot.forEach(async (docu) => {
+                    const { docs } = await getDocs(q);
+                    docs.forEach(async (docu) => {
                         if (docu.data().uid == auth.currentUser.uid){
                             const userDocRef = doc(db, 'users', docu.id);
                             try {
                               const UserData = (await getDoc(userDocRef)).data().wishlist;
                               console.log(UserData);
-                              setIds(UserData)
-                              getTripsData(UserData)
+                              setIds([...wishListIds, UserData])
+                              
                             } catch (err) {
                               console.error(`Error updating document ${docu.id}:`, err);
                             }
                           }
                         }
                     );
+                    getTripsData(wishListIds)
                 
                   } catch (err) {
                     alert(err)
@@ -51,12 +52,12 @@ const WishList = () => {
     }
 
     const getTripsData = async(data)=>{
-        let myAr = []
-        await data.map(async(id)=>{
-            const tripRef = doc(db, "trips",id)
-            const querySnapshot = (await getDoc(tripRef)).data()
-            console.log(querySnapshot)
-            setTrips([...wishTrips, querySnapshot])
+        // let myAr = []
+        // await data.map(async(id)=>{
+        //     const tripRef = doc(db, "trips",id)
+        //     const querySnapshot = (await getDoc(tripRef)).data()
+        //     console.log(querySnapshot)
+        //     setTrips([...wishTrips, querySnapshot])
            
             // querySnapshot.forEach((doc) => {
             //     // doc.data() is never undefined for query doc snapshots
@@ -64,9 +65,29 @@ const WishList = () => {
             //     let obj = { id: doc.id, ...doc.data() }
             //     myAr.push(obj)
         // });
-        })
+        try{
+            const tripRef = collection(db, "trips")
+            const specificTripsArray = [];
+        for (const tripId of data) {
+          const tripDocRef = doc(db, "trips", tripId);
+          const tripDocSnapshot = await getDoc(tripDocRef);
+
+          if (tripDocSnapshot.exists()) {
+            specificTripsArray.push({ id: tripDocSnapshot.id, ...tripDocSnapshot.data() });
+          }
+        }
+
+        setTrips(specificTripsArray);
+        }
+     catch (error) {
+        console.error('Error fetching specific trips:', error);
+      }
         
-    }   
+        
+
+        }
+        
+    
 
     
 
@@ -78,6 +99,8 @@ const WishList = () => {
         // }
         
     },[])
+
+
     return (
 
 
@@ -101,33 +124,6 @@ const WishList = () => {
                     )
                 })
             }
-
-
-            {/* <ChatPreview
-                name="Jason"
-                message="Hej"
-                timestamp="6 mins ago"
-                profilePic="https://images.pexels.com/photos/7533347/pexels-photo-7533347.jpeg?auto=compress&cs=tinysrgb&w=800"
-            />
-            <Divider variant="inset" component="li" />
-            <ChatPreview
-                name="Beach vacay summer 2023"
-                message="you got invited"
-                timestamp="1 hr ago"
-                profilePic="https://images.pexels.com/photos/635279/pexels-photo-635279.jpeg?auto=compress&cs=tinysrgb&w=1600" />
-    <ListItem onClick={()=>{navigate(`/chats/${name}`)}}>
-            
-            <ListItemAvatar>
-                <Avatar src={profilePic} />
-            </ListItemAvatar>
-
-            <ListItemText sx={{display: 'flex'}}>
-                <Typography>{name}</Typography>
-                <Typography>{message}</Typography>
-                <Typography>{timestamp}</Typography>
-            </ListItemText>
-
-        </ListItem> */}
 
         </List>
     )

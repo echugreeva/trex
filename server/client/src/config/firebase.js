@@ -11,7 +11,7 @@ import {
   sendPasswordResetEmail,
   signOut
 } from 'firebase/auth';
-import { getFirestore, query, getDocs, collection, where, addDoc } from "firebase/firestore";
+import { getFirestore, query, getDocs, collection, where, addDoc, setDoc } from "firebase/firestore";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -45,18 +45,30 @@ const logInWithEmailAndPassword = async (email, password) => {
   }
 }
 
-const registerWithEmailAndPassword = async (email, password) => {
-  try {
-    const res = await createUserWithEmailAndPassword(auth, email, password);
-    const user = res.user;
-    console.log(user)
-    await addDoc(collection(db, "users"), {
-      uid: user.uid,
-      email,
-      authProvider: "local",
-      // password: formData.password
+// const registerWithEmailAndPassword = async (email, password) => {
+//   try {
+//     const res = await createUserWithEmailAndPassword(auth, email, password);
+//     const user = res.user;
+//     console.log(user)
+//     await setDoc(db, "users", {
+//       uid: user.uid,
+//       email,
+//       authProvider: "local",
+//       // password: formData.password
 
-    });
+//     });
+    const registerWithEmailAndPassword = async (email, password) => {
+      try {
+        const res = await createUserWithEmailAndPassword(auth, email, password);
+        const user = res.user;
+        console.log(user)
+        await addDoc(collection(db, "users"), {
+          uid: user.uid,
+          email,
+          authProvider: "local",
+          // password: formData.password
+    
+        });
    
     sessionStorage.setItem('Auth Token', res._tokenResponse.refreshToken)
   } catch (err) {

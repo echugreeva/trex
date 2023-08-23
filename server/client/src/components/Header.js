@@ -35,7 +35,7 @@ const Header = () => {
 
     return (
         
-            <AppBar position="static"  elevation={0} color ='info'sx={{ backgroundColor: "white",width:'100%', border:'1px solid'}}>
+            <AppBar position="sticky"  elevation={0} color ='info'sx={{ backgroundColor: "white",width:'100%', border:'1px solid'}}>
                 <Toolbar sx={{ display: 'flex', justifyContent: "space-around", width: '100%' }}>
                     <IconButton
                     

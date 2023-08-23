@@ -20,21 +20,24 @@ const ChatScreen = () => {
                
                 try {
     
-                    const querySnapshot = await getDocs(q);
-                    querySnapshot.forEach(async (docu) => {
+                    const { docs } = await getDocs(q);
+                    docs.forEach(async (docu) => {
                         if (docu.data().uid == auth.currentUser.uid){
                             const userDocRef = doc(db, 'users', docu.id);
                             try {
                               const UserData = (await getDoc(userDocRef)).data().matched;
                               console.log(UserData);
-                              setIds(UserData)
-                              getTripsData(UserData)
+                              setIds([...matchListIds, UserData])
                             } catch (err) {
                               console.error(`Error updating document ${docu.id}:`, err);
                             }
                           }
                         }
+                        
                     );
+                    
+                              console.log(matchListIds)
+                              getTripsData(matchListIds)
                 
                   } catch (err) {
                     alert(err)
@@ -43,24 +46,27 @@ const ChatScreen = () => {
     }
 
     const getTripsData = async(data)=>{
-        let myAr = []
-        data.forEach(async(id)=>{
-            const tripRef = doc(db, "trips",id)
-            const querySnapshot = (await getDoc(tripRef)).data()
-            console.log(querySnapshot)
-            setTrips([...matchTrips, querySnapshot])
-            myAr.push(querySnapshot)
-            // querySnapshot.forEach((doc) => {
-            //     // doc.data() is never undefined for query doc snapshots
-            //     console.log(doc.id, " => ", doc.data());
-            //     let obj = { id: doc.id, ...doc.data() }
-            //     myAr.push(obj)
-        // });
-        })
-        console.log(myAr)
-        // setTrips([...matchTrips, ...myAr])
-        console.log(matchTrips)
-    }
+        try{
+            const tripRef = collection(db, "trips")
+            const specificTripsArray = [];
+        for (const tripId of data) {
+          const tripDocRef = doc(db, "trips", tripId);
+          const tripDocSnapshot = await getDoc(tripDocRef);
+
+          if (tripDocSnapshot.exists()) {
+            specificTripsArray.push({ id: tripDocSnapshot.id, ...tripDocSnapshot.data() });
+          }
+        }
+
+        setTrips(specificTripsArray);
+        }
+     catch (error) {
+        console.error('Error fetching specific trips:', error);
+      }
+        
+        
+
+        }
         
 
    
@@ -76,6 +82,14 @@ const ChatScreen = () => {
         // }
         
     },[])
+    useEffect(()=> {
+        
+        getTripsData()
+        // if(matchListIds.length>1){
+        //     getTripsData()
+        // }
+        
+    },[matchListIds])
     
     // useEffect(()=> {
     //     getTripsData()

@@ -249,7 +249,11 @@ const OnboardingForm = () => {
                     {activeStep === steps.length - 1 && (<Button
                         variant="contained"
                         color="primary"
-                        onClick={handleSubmit}
+                        onClick={()=>{
+                            handleSubmit()
+                            navigate('/home')
+                        
+                        }}
                         sx={{ // Set minimum width
                             borderRadius: '20px',
                             marginLeft: 8
