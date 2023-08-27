@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { addDoc, collection, updateDoc } from "firebase/firestore";
+import { addDoc, collection, updateDoc, doc, arrayUnion } from "firebase/firestore";
 import dayjs from 'dayjs';
 import {
     Container,
@@ -101,7 +101,7 @@ const TripForm = () => {
         };
     });
     const [activeStep, setActiveStep] = useState(0);
-    const [formData, setFormData] = useState({});
+    const [formData, setFormData] = useState({image:['https://images.pexels.com/photos/2405101/pexels-photo-2405101.jpeg?auto=compress&cs=tinysrgb&w=800']});
     const [selectedCountry, setSelectedCountry] = useState("US");
     const navigate = useNavigate()
 
@@ -127,8 +127,60 @@ const TripForm = () => {
             ...formData
         
               }
+             
         );
+        let tripId = docRef.id
+        console.log(tripId)
+        addTripToMatched(tripId)
     }
+
+    const addTripToMatched = async(id)=> {
+        const userDocRef = doc(db,`users/${auth.currentUser.uid}`)
+        try {
+                                await updateDoc(userDocRef, {
+                                    matched: arrayUnion(id)
+                                });
+                                console.log(`Document  updated successfully.`);
+                            } catch (err) {
+                                console.error(`Error updating document:`, err);
+                            }
+    }
+
+    // add logic to add new trip to user matched trips by id
+    // const addTripToMatched = async()=>{
+    //     const q = query(collection(db, 'users'));
+    //     try {
+
+    //         const { docs } = await getDocs(q);
+    //         docs.forEach(async (docu) => {
+    //             if (docu.data().owner == auth.currentUser.uid) {
+    //                 const userDocRef = doc(db, 'users', docu.id);
+    //                 try {
+    //                     await updateDoc(userDocRef, {
+    //                         matched: arrayUnion(tripToShow[0].id)
+    //                     });
+    //                     console.log(`Document ${docu.id} updated successfully.`);
+    //                 } catch (err) {
+    //                     console.error(`Error updating document ${docu.id}:`, err);
+    //                 }
+    //             }
+    //         }
+    //         );
+
+    //     } catch (err) {
+    //         alert(err)
+    //     }
+    // }
+    //let userQuery = doc (firestore, `users/${auth.currentUser.uid}`)
+    //let tripQ = doc(firestore, `'trips'), where ('owner', '==', auth.currentUser.uid )
+    //let userSnap = await getDoc(userQuery)
+    //onSnapshot(tripQ, snapshot => {
+        // console.log({
+        //     user: userSnap.data(),
+        //     trips: snapshotEqual.docs.map(d=>d.data())
+        // })
+    // })
+
 
     const handleSubmit = () => {
 

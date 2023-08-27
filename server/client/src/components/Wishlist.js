@@ -23,33 +23,17 @@ const WishList = () => {
     // const [wishTrips, setTrips] = useState([...trips.trips].filter(t => wishListIds.includes(t.id)))
 
     const getMatchedIds = async()=> {
-        const q = query(collection(db, 'users'));
-               
-                try {
-    
-                    const { docs } = await getDocs(q);
-                    docs.forEach(async (docu) => {
-                        
-                        if (docu.data().uid == auth.currentUser.uid){
-                            const userDocRef = doc(db, 'users', docu.id);
-                            try {
-                              const UserData = await getDoc(userDocRef)
-                              let wl =  UserData.data().wishlist
-                              getTripsData(wl)
-                            } catch (err) {
-                              console.error(`Error updating document ${docu.id}:`, err);
-                            }
-                          }
-                          
-                        }
-                    );
-                    
-                    
-                
-                  } catch (err) {
-                    alert(err)
-                  }
+        const userDocRef = doc(db, `users/${auth.currentUser.uid}`)
+        try {
 
+
+            const UserData = await getDoc(userDocRef)
+            let wl = UserData.data().wishlist
+            getTripsData(wl)
+            setIds(wl)
+        } catch (err) {
+            console.error(`Error updating document:`, err);
+        }
                   
 
     }

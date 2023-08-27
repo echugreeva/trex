@@ -11,7 +11,7 @@ import {
   sendPasswordResetEmail,
   signOut
 } from 'firebase/auth';
-import { getFirestore, query, getDocs, collection, where, addDoc, setDoc } from "firebase/firestore";
+import { getFirestore, query, getDocs, collection, where, addDoc, setDoc, doc} from "firebase/firestore";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -62,15 +62,18 @@ const logInWithEmailAndPassword = async (email, password) => {
         const res = await createUserWithEmailAndPassword(auth, email, password);
         const user = res.user;
         console.log(user)
-        await addDoc(collection(db, "users"), {
-          uid: user.uid,
+        const userDocRef = doc(db, 'users', user.uid);
+        await setDoc(userDocRef, {
+          
           email,
           authProvider: "local",
-          // password: formData.password
+         
     
         });
+
    
     sessionStorage.setItem('Auth Token', res._tokenResponse.refreshToken)
+    sessionStorage.setItem('uid', res.user.uid)
   } catch (err) {
     console.error(err);
     alert(err.message);
