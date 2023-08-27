@@ -24,47 +24,37 @@ const WishList = () => {
 
     const getMatchedIds = async()=> {
         const q = query(collection(db, 'users'));
-    
                
                 try {
     
                     const { docs } = await getDocs(q);
                     docs.forEach(async (docu) => {
+                        
                         if (docu.data().uid == auth.currentUser.uid){
                             const userDocRef = doc(db, 'users', docu.id);
                             try {
-                              const UserData = (await getDoc(userDocRef)).data().wishlist;
-                              console.log(UserData);
-                              setIds([...wishListIds, UserData])
-                              
+                              const UserData = await getDoc(userDocRef)
+                              let wl =  UserData.data().wishlist
+                              getTripsData(wl)
                             } catch (err) {
                               console.error(`Error updating document ${docu.id}:`, err);
                             }
                           }
+                          
                         }
                     );
-                    getTripsData(wishListIds)
+                    
+                    
                 
                   } catch (err) {
                     alert(err)
                   }
 
+                  
+
     }
 
     const getTripsData = async(data)=>{
-        // let myAr = []
-        // await data.map(async(id)=>{
-        //     const tripRef = doc(db, "trips",id)
-        //     const querySnapshot = (await getDoc(tripRef)).data()
-        //     console.log(querySnapshot)
-        //     setTrips([...wishTrips, querySnapshot])
-           
-            // querySnapshot.forEach((doc) => {
-            //     // doc.data() is never undefined for query doc snapshots
-            //     console.log(doc.id, " => ", doc.data());
-            //     let obj = { id: doc.id, ...doc.data() }
-            //     myAr.push(obj)
-        // });
         try{
             const tripRef = collection(db, "trips")
             const specificTripsArray = [];
@@ -92,7 +82,7 @@ const WishList = () => {
     
 
     useEffect(()=> {
-        
+        console.log(auth.currentUser.uid)
         getMatchedIds()
         // if(matchListIds.length>1){
         //     getTripsData()

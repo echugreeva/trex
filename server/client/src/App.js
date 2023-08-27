@@ -11,6 +11,7 @@ import Profile from './components/Profile';
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Reset from "./components/Reset";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 import { ThemeProvider } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
@@ -73,17 +74,17 @@ function App() {
             <Header />
             <Container sx={{ flex: 1, overflowY: 'auto', border: '1px solid' }} disableGutters >
               <Routes>
-                <Route path='/onboarding' element={<OnboardingForm />} />
-                <Route path='settings' element={<UserSettings />} />
-                <Route path='/' element={<Login />} />
-                <Route path='/reset' element={<Reset />} />
-                <Route path='/register' element={<Register />} />
-                <Route path='/home' element={<Home />} />
-                <Route path='/chats' element={<ChatWishListScreen />} />
-                <Route path='/settings' element={<Home />} />
-                <Route path="/chats/:person" element={<SingleChat />} />
-                <Route path="/newtrip" element={<TripForm />} />
-                <Route path='/profile' element={<Profile />} />
+                <Route path='/onboarding' element={<ErrorBoundary><OnboardingForm /></ErrorBoundary>} />
+                <Route path='settings' element={<ErrorBoundary><UserSettings /></ErrorBoundary>} />
+                <Route path='/' element={<ErrorBoundary><Login /></ErrorBoundary>} />
+                <Route path='/reset' element={<ErrorBoundary><Reset /></ErrorBoundary>} />
+                <Route path='/register' element={<ErrorBoundary><Register /></ErrorBoundary>} />
+                <Route path='/home' element={<ErrorBoundary><Home /></ErrorBoundary>} />
+                <Route path='/chats' element={<ErrorBoundary><ChatWishListScreen /></ErrorBoundary>} />
+                <Route path='/settings' element={<ErrorBoundary><Home /></ErrorBoundary>} />
+                <Route path="/chats/:person" element={<ErrorBoundary><SingleChat /></ErrorBoundary>} />
+                <Route path="/newtrip" element={<ErrorBoundary><TripForm /></ErrorBoundary>} />
+                <Route path='/profile' element={<ErrorBoundary><Profile /></ErrorBoundary>} />
               </Routes>
             </Container>
           </Container>

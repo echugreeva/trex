@@ -25,9 +25,11 @@ const ChatScreen = () => {
                         if (docu.data().uid == auth.currentUser.uid){
                             const userDocRef = doc(db, 'users', docu.id);
                             try {
-                              const UserData = (await getDoc(userDocRef)).data().matched;
-                              console.log(UserData);
-                              setIds([...matchListIds, UserData])
+                        
+                              const UserData = await getDoc(userDocRef)
+                              let match =  UserData.data().matched
+                              getTripsData(match)
+                              setIds(match)
                             } catch (err) {
                               console.error(`Error updating document ${docu.id}:`, err);
                             }
@@ -82,14 +84,7 @@ const ChatScreen = () => {
         // }
         
     },[])
-    useEffect(()=> {
-        
-        getTripsData()
-        // if(matchListIds.length>1){
-        //     getTripsData()
-        // }
-        
-    },[matchListIds])
+
     
     // useEffect(()=> {
     //     getTripsData()
