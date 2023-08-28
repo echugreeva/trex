@@ -242,10 +242,10 @@ const TripForm = () => {
                             {/* <Typography variant="h6">Step 4</Typography> */}
                             <ImageList  cols={3} rowHeight={100}>
                                 {itemData.map((item) => (
-                                    <ImageListItem key={item.img}>
+                                    <ImageListItem key={item.img} sx={{p:'2px'}}>
                                         <img
-                                            src={`${item.img}?w=164&h=164&fit=crop&auto=format`}
-                                            srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+                                            src={`${item.img}`}
+                                            srcSet={`${item.img}`}
                                             alt={item.title}
                                             loading="lazy"
                                         />
