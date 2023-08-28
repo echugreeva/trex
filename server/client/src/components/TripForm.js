@@ -146,45 +146,9 @@ const TripForm = () => {
                             }
     }
 
-    // add logic to add new trip to user matched trips by id
-    // const addTripToMatched = async()=>{
-    //     const q = query(collection(db, 'users'));
-    //     try {
-
-    //         const { docs } = await getDocs(q);
-    //         docs.forEach(async (docu) => {
-    //             if (docu.data().owner == auth.currentUser.uid) {
-    //                 const userDocRef = doc(db, 'users', docu.id);
-    //                 try {
-    //                     await updateDoc(userDocRef, {
-    //                         matched: arrayUnion(tripToShow[0].id)
-    //                     });
-    //                     console.log(`Document ${docu.id} updated successfully.`);
-    //                 } catch (err) {
-    //                     console.error(`Error updating document ${docu.id}:`, err);
-    //                 }
-    //             }
-    //         }
-    //         );
-
-    //     } catch (err) {
-    //         alert(err)
-    //     }
-    // }
-    //let userQuery = doc (firestore, `users/${auth.currentUser.uid}`)
-    //let tripQ = doc(firestore, `'trips'), where ('owner', '==', auth.currentUser.uid )
-    //let userSnap = await getDoc(userQuery)
-    //onSnapshot(tripQ, snapshot => {
-        // console.log({
-        //     user: userSnap.data(),
-        //     trips: snapshotEqual.docs.map(d=>d.data())
-        // })
-    // })
 
 
     const handleSubmit = () => {
-
-        addToLocalStorage('newTrips', formData)
         addTripToDB()
         navigate('/chats')
     }

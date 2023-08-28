@@ -29,7 +29,7 @@ import { getFromLocalStorage, addToLocalStorage } from "../helpers/localStorage"
 import { getDocs, collection, query, updateDoc, doc, setDoc, getDoc, arrayUnion } from "firebase/firestore";
 import { auth, db } from '../config/firebase'
 import ErrorBoundary from "./ErrorBoundary";
-
+import { onAuthStateChanged } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 
@@ -46,7 +46,7 @@ const ExpandMore = styled((props) => {
 }));
 
 const ImageCard = () => {
-    const [user, loading, error] = useAuthState(auth)
+  
     const navigate = useNavigate()
     const [expanded, setExpanded] = useState(false);
 
@@ -120,19 +120,13 @@ const ImageCard = () => {
     const [saved, setSaved] = useState([])
     const [matchReq, setMatchReq] = useState([])
     const [imgIndex, setIndex] = useState(0)
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
 
 
-    useEffect(() => {
-        // console.log(auth.currentUser.uid)
-        fetchTrips()
-        // fetchSaved()
+    
 
-    }, [])
-
-    useEffect(() => {
-        if (loading) return;
-        if (!user) return navigate("/");
-    }, [user, loading]);
+    
 
     const scrollImg = (direction) => {
         let length = tripToShow[0].image.length
@@ -229,17 +223,33 @@ const ImageCard = () => {
                             }
         tripEvaluate()
     }
-    console.log(tripToShow)
-    console.log(imgIndex)
-    // let imgSrc = tripToShow[0].images[0]|| tripToShow[0].image[0]
-    if (!tripToShow) {
-        return (
-            <Typography>
-                Loading
-            </Typography>
-        )
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged(user => {
+            setUser(user);
+            setLoading(false);
+        });
 
+        return () => unsubscribe();
+    }, [])
+  
+    useEffect(() => {
+        // console.log(auth.currentUser.uid)
+        if (user && user.uid){
+            fetchTrips()
+        }
+        
+        // fetchSaved()
+
+    }, [user])
+
+    if (loading) {
+        return <p>Loading...</p>;
     }
+
+    if (!user) {
+        return navigate("/");
+    }
+
     if (tripToShow.length < 1) {
         return (
             <Typography>

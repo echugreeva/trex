@@ -9,7 +9,8 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   sendPasswordResetEmail,
-  signOut
+  signOut,
+
 } from 'firebase/auth';
 import { getFirestore, query, getDocs, collection, where, addDoc, setDoc, doc} from "firebase/firestore";
 // TODO: Add SDKs for Firebase products that you want to use

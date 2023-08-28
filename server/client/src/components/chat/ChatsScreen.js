@@ -2,22 +2,27 @@
 import React from "react";
 import { useState, useEffect } from 'react';
 import List from '@mui/material/List';
+import { useNavigate } from 'react-router-dom'
 import ChatPreview from "./ChatPreview"
 import Divider from '@mui/material/Divider';
 import { getFromLocalStorage, addToLocalStorage } from "../../helpers/localStorage";
 import trips from '../../trips.json'
 import { getDocs, collection, query, updateDoc, doc, getDoc, where } from "firebase/firestore";
 import { auth, db } from '../../config/firebase'
+import { useAuthState } from "react-firebase-hooks/auth";
+import { onAuthStateChanged } from "firebase/auth";
 
 const ChatScreen = () => {
     const [matchListIds, setIds] = useState([])
     const [matchTrips, setTrips] = useState([])
-
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
+    // const [user, loading, error] = useAuthState(auth)
+    let navigate = useNavigate();
 
     const getMatchedIds = async () => {
         const userDocRef = doc(db, `users/${auth.currentUser.uid}`)
         try {
-
 
             const UserData = await getDoc(userDocRef)
             let match = UserData.data().matched
@@ -26,36 +31,6 @@ const ChatScreen = () => {
         } catch (err) {
             console.error(`Error updating document:`, err);
         }
-
-        // const q = query(collection(db, 'users'));
-
-
-        //         try {
-
-        //             const { docs } = await getDocs(q);
-        //             docs.forEach(async (docu) => {
-        //                 if (docu.data().uid == auth.currentUser.uid){
-        //                     const userDocRef = doc(db, 'users', docu.id);
-        //                     try {
-
-        //                       const UserData = await getDoc(userDocRef)
-        //                       let match =  UserData.data().matched
-        //                       getTripsData(match)
-        //                       setIds(match)
-        //                     } catch (err) {
-        //                       console.error(`Error updating document ${docu.id}:`, err);
-        //                     }
-        //                   }
-        //                 }
-
-        //             );
-
-        //                       console.log(matchListIds)
-        //                       getTripsData(matchListIds)
-
-        //           } catch (err) {
-        //             alert(err)
-        //           }
 
     }
 
@@ -81,29 +56,30 @@ const ChatScreen = () => {
 
 
     }
-
-
-
-
-
-
-
     useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged(user => {
+            setUser(user);
+            setLoading(false);
+        });
 
-        getMatchedIds()
-        // if(matchListIds.length>1){
-        //     getTripsData()
-        // }
-
+        return () => unsubscribe();
     }, [])
 
 
-    // useEffect(()=> {
-    //     getTripsData()
+    useEffect(() => {
+        if (user && user.uid) { getMatchedIds() }
 
-    // },[matchListIds])
+    }, [user])
 
-    // if(matchTrips.length>1){
+    if (loading) {
+        return <p>Loading...</p>;
+    }
+
+    if (!user) {
+        return navigate("/");
+    }
+
+ 
     return (
         <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
             {

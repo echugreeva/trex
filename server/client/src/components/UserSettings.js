@@ -6,14 +6,16 @@ import { Typography, Box, Container } from '@mui/material'
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from 'react-router-dom'
 import ErrorBoundary from "./ErrorBoundary";
-
+import { onAuthStateChanged } from "firebase/auth";
 
 
 const UserSettings = () => {
     const [userData, setUserData] = useState({})
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
     let navigate = useNavigate();
 
-    const [user, loading, error] = useAuthState(auth)
+    // const [user, loading, error] = useAuthState(auth)
 
     const getUserData = async () => {
         const userDocRef = doc(db, `users/${auth.currentUser.uid}`)
@@ -24,24 +26,35 @@ const UserSettings = () => {
         } catch (err) {
             console.error(`Error updating document:`, err);
 
-
-
         }
     }
 
-
-
     useEffect(() => {
-        const userId = auth.currentUser.uid;
-        console.log(auth.currentUser)
-        getUserData()
+        const unsubscribe = auth.onAuthStateChanged(user => {
+            setUser(user);
+            setLoading(false);
+        });
+
+        return () => unsubscribe();
     }, [])
 
+
     useEffect(() => {
-        if (loading) return;
-        if (!user) return navigate("/");
-        getUserData()
-    }, [user, loading]);
+        if (user && user.uid) { 
+            
+            getUserData()
+        }
+
+    }, [user])
+
+    if (loading) {
+        return <p>Loading...</p>;
+    }
+
+    if (!user) {
+        return navigate("/");
+    }
+
 
     return (
         <Container maxWidth="sm" sx={{ mt: 8 }}>

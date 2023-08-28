@@ -21,7 +21,7 @@ import { getFromLocalStorage, addToLocalStorage } from "../helpers/localStorage"
 import { auth, db } from '../config/firebase'
 import { collection, addDoc, Timestamp, doc, updateDoc, getDocs, query, where } from 'firebase/firestore'
 import { useAuthState } from "react-firebase-hooks/auth";
-
+import { onAuthStateChanged } from "firebase/auth";
 
 const steps = ["Step 1", "Step 2", "Step 3"];
 const hobbies = ['Adventure', 'Hiking', 'Beach', 'Mountains', 'Forest', 'City', 'Nature', 'History', 'Art', 'Music', 'Food', 'Nightlife', 'Backpacking', 'Culture', 'Luxury', 'Yoga', 'Wine', 'Meditation'
@@ -30,8 +30,6 @@ const hobbies = ['Adventure', 'Hiking', 'Beach', 'Mountains', 'Forest', 'City', 
 //in the future get all input fields and step in props and generate form as a function
 
 const OnboardingForm = () => {
-
-    const [user, loading, error] = useAuthState(auth)
 
     countries.registerLocale(enLocale);
     const countryObj = countries.getNames("en", { select: "official" });
@@ -45,6 +43,8 @@ const OnboardingForm = () => {
     const [activeStep, setActiveStep] = useState(0);
     const [formData, setFormData] = useState({});
     const [selectedCountry, setSelectedCountry] = useState("");
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
     const navigate = useNavigate()
 
     const selectCountryHandler = (value) => setSelectedCountry(value);
@@ -63,78 +63,43 @@ const OnboardingForm = () => {
             [event.target.name]: event.target.value,
         });
     };
-    // const handleSubmit = () => {
-    //     addToLocalStorage('newUser', formData)
-    //     setFormData({})
-    //     navigate('/home')
-    // }
+
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        if (user) {
-            // const userId = auth.currentUser.uid;
-            // // console.log(user)
-            // // console.log('User ID:', userId);
-            // const q = query(collection(db, 'users'));
-            
+        if (user&&user.id) {
+            const userDocRef = doc(db, `users/${auth.currentUser.uid}`);
+            try {
+                await updateDoc(userDocRef, {
+                    ...formData,
+                    created: Timestamp.now()
+                });
+                console.log(`Document  updated successfully.`);
+            } catch (err) {
+                console.error(`Error updating document :`, err);
+            }
+        }
+    }
 
-            // try {
-
-            //     const querySnapshot = await getDocs(q);
-            //     querySnapshot.forEach(async (docu) => {
-            //         if (docu.data().uid == userId) {
-                        // const userDocRef = doc(db, 'users', docu.id);
-                        const userDocRef = doc(db, `users/${auth.currentUser.uid}`);
-                        try {
-                            await updateDoc(userDocRef, {
-                                ...formData,
-                                created: Timestamp.now()
-                            });
-                            console.log(`Document  updated successfully.`);
-                        } catch (err) {
-                            console.error(`Error updating document :`, err);
-                        }
-                    }
-                }
-            //     );
-            //     // await updateDoc(userDocRef, {
-            //     //     ...formData,
-            //     //   created: Timestamp.now()
-            //     // })
-
-            // } catch (err) {
-            //     alert(err)
-            // }
-
-
-            // Now you can use the userId to log user ads data as shown in the previous example.
-            //   } else {
-            //     // No user is signed in
-            //     console.log('No user is signed in.');
-            //   }
-            // try {
-            //     await addDoc(collection(db, 'users'), {...formData, created: Timestamp.now()
-            //     })
-            //     setFormData({})
-            //     navigate('/home')
-            //     // onClose()
-            // } catch (err) {
-            //     alert(err)
-            // }
-    //     }
-
-    // }
-    // User is signed in, you can get the user ID
 
     useEffect(() => {
-        
-        if (loading) return;
-        if (!user) return navigate("/");
-    }, [user, loading]);
+        const unsubscribe = auth.onAuthStateChanged(user => {
+            setUser(user);
+            setLoading(false);
+        });
 
-   useEffect(()=>{
-    console.log(user)
-   },[])
+        return () => unsubscribe();
+    }, [])
+
+    if (loading) {
+        return <p>Loading...</p>;
+    }
+
+    if (!user) {
+        return navigate("/");
+    }
+
+
     return (
         <Container maxWidth="sm" sx={{ mt: 8 }}>
             <MobileStepper
@@ -144,11 +109,6 @@ const OnboardingForm = () => {
                 position="static"
                 sx={{ minWidth: '100%', justifyContent: 'center', marginBottom: '1em' }}
             >
-                {/* {steps.map((label) => (
-                    <Step key={label}>
-                        <StepLabel>{label}</StepLabel>
-                    </Step>
-                ))} */}
 
             </MobileStepper>
             <Grid container direction="column" alignItems="center" spacing={2}>

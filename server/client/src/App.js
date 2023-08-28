@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 import Container from '@mui/material/Container';
 import OnboardingForm from './components/OnboardingForm';
 import Home from './components/Home';
@@ -12,7 +12,8 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import Reset from "./components/Reset";
 import ErrorBoundary from "./components/ErrorBoundary";
-
+import { onAuthStateChanged } from "firebase/auth";
+import {auth} from './config/firebase'
 import { ThemeProvider } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 import { CssBaseline } from '@mui/material'
@@ -61,8 +62,7 @@ const theme = createTheme(
 
 
 function App() {
-  const [user, setUser] = useState('')
-  const [currentTrip, setCurrentTrip] = useState('')
+  
   return (
     <BrowserRouter>
       <ThemeProvider theme={theme}>
