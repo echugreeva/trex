@@ -19,7 +19,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 
 const Login = () => {
     const navigate = useNavigate()
-    
+
 
     const [formData, setFormData] = useState('');
     const [user, loading, error] = useAuthState(auth);
@@ -56,19 +56,23 @@ const Login = () => {
                 onClick={() => {
                     logInWithEmailAndPassword(formData.email, formData.password)
                     //add condition not to redirect
-                    if(auth){
+                    if (auth) {
                         navigate('/home')
                     }
-                    
+
+
+                }}
+                sx={{ // Set minimum width
+                    borderRadius: '20px',
                 }}
             >Login</Button>
-            <div>
+            {/* <div>
                 <Link to="/reset">Forgot Password</Link>
-            </div>
-            <div>
+            </div> */}
+            <Typography sx={{ marginTop: '2em' }}>
                 Don't have an account? <Link to="/register">Register</Link> now.
-            </div>
-            
+            </Typography>
+
         </Container >
     );
 }

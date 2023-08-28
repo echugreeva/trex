@@ -55,6 +55,9 @@ const LoginReg = () => {
                     registerWithEmailAndPassword(formData.email, formData.password)
                     navigate('/onboarding')
                 }}
+                sx={{ // Set minimum width
+                    borderRadius: '20px',
+                }}
             >Register</Button>
            
             <div>
