@@ -4,13 +4,10 @@ import { useState, useEffect } from 'react';
 import List from '@mui/material/List';
 import { useNavigate } from 'react-router-dom'
 import ChatPreview from "./ChatPreview"
-import Divider from '@mui/material/Divider';
 import { getFromLocalStorage, addToLocalStorage } from "../../helpers/localStorage";
 import trips from '../../trips.json'
 import { getDocs, collection, query, updateDoc, doc, getDoc, where } from "firebase/firestore";
 import { auth, db } from '../../config/firebase'
-import { useAuthState } from "react-firebase-hooks/auth";
-import { onAuthStateChanged } from "firebase/auth";
 
 const ChatScreen = () => {
     const [matchListIds, setIds] = useState([])
@@ -79,7 +76,7 @@ const ChatScreen = () => {
         return navigate("/");
     }
 
- 
+
     return (
         <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
             {
@@ -95,28 +92,11 @@ const ChatScreen = () => {
 
                         />
 
-
-
-
                     )
                 })
             }
-            {/* <ChatPreview
-                    name="Jason"
-                    message="Hej"
-                    timestamp="6 mins ago"
-                    profilePic="https://images.pexels.com/photos/7533347/pexels-photo-7533347.jpeg?auto=compress&cs=tinysrgb&w=800"
-                />
-                <Divider variant="inset" component="li" />
-                <ChatPreview
-                    name="Beach vacay summer 2023"
-                    message="you got invited"
-                    timestamp="1 hr ago"
-                    profilePic="https://images.pexels.com/photos/635279/pexels-photo-635279.jpeg?auto=compress&cs=tinysrgb&w=1600" /> */}
         </List>
     )
 }
-
-// };
 
 export default ChatScreen;

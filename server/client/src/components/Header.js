@@ -81,10 +81,6 @@ const Header = () => {
                         <ChatBubbleOutlineSharpIcon sx={{ fontSize: 40 }}/>
                     </IconButton>
 
-
-
-
-
                 </Toolbar>
             </AppBar>
         

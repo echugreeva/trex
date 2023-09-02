@@ -89,7 +89,7 @@ const itemData = [
 
 
 const TripForm = () => {
-    
+
     // const lastId = getFromLocalStorage('matchedTrips').pop()[id]
     countries.registerLocale(enLocale);
     const countryObj = countries.getNames("en", { select: "official" });
@@ -101,7 +101,7 @@ const TripForm = () => {
         };
     });
     const [activeStep, setActiveStep] = useState(0);
-    const [formData, setFormData] = useState({image:['https://images.pexels.com/photos/2405101/pexels-photo-2405101.jpeg?auto=compress&cs=tinysrgb&w=800']});
+    const [formData, setFormData] = useState({ image: ['https://images.pexels.com/photos/2405101/pexels-photo-2405101.jpeg?auto=compress&cs=tinysrgb&w=800'] });
     const [selectedCountry, setSelectedCountry] = useState("US");
     const navigate = useNavigate()
 
@@ -122,28 +122,29 @@ const TripForm = () => {
         });
     };
 
-    const addTripToDB = async()=> {
-        const docRef = await addDoc(collection(db, "trips"), {owner: auth.currentUser.uid,
+    const addTripToDB = async () => {
+        const docRef = await addDoc(collection(db, "trips"), {
+            owner: auth.currentUser.uid,
             ...formData
-        
-              }
-             
+
+        }
+
         );
         let tripId = docRef.id
         console.log(tripId)
         addTripToMatched(tripId)
     }
 
-    const addTripToMatched = async(id)=> {
-        const userDocRef = doc(db,`users/${auth.currentUser.uid}`)
+    const addTripToMatched = async (id) => {
+        const userDocRef = doc(db, `users/${auth.currentUser.uid}`)
         try {
-                                await updateDoc(userDocRef, {
-                                    matched: arrayUnion(id)
-                                });
-                                console.log(`Document  updated successfully.`);
-                            } catch (err) {
-                                console.error(`Error updating document:`, err);
-                            }
+            await updateDoc(userDocRef, {
+                matched: arrayUnion(id)
+            });
+            console.log(`Document  updated successfully.`);
+        } catch (err) {
+            console.error(`Error updating document:`, err);
+        }
     }
 
 
@@ -159,7 +160,7 @@ const TripForm = () => {
                 activeStep={activeStep}
                 steps={4}
                 position="static"
-                sx={{ minWidth: '100%', justifyContent: 'center', marginBottom: '1em'}}
+                sx={{ minWidth: '100%', justifyContent: 'center', marginBottom: '1em' }}
             >
                 {/* {steps.map((label) => (
                     <Step key={label}>
@@ -240,9 +241,9 @@ const TripForm = () => {
                     {activeStep === 3 && (
                         <>
                             {/* <Typography variant="h6">Step 4</Typography> */}
-                            <ImageList  cols={3} rowHeight={100}>
+                            <ImageList cols={3} rowHeight={100}>
                                 {itemData.map((item) => (
-                                    <ImageListItem key={item.img} sx={{p:'2px'}}>
+                                    <ImageListItem key={item.img} sx={{ p: '2px' }}>
                                         <img
                                             src={`${item.img}`}
                                             srcSet={`${item.img}`}
@@ -252,51 +253,20 @@ const TripForm = () => {
                                     </ImageListItem>
                                 ))}
                             </ImageList>
-                            {/* <>
-                            {
-                                itemData.map((item) => {
-                                    return (
-                                        <FormControlLabel
-                                        
-                                        control={
-                                            <Checkbox checked={false} key={item.img} />
-                                        }
-                                        label={
-                                            <img
-                                            src={item.img}
-                                            // srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-                                            alt={item.title}
-                                            loading="lazy"
-                                            width="40px" height="auto"
-                                        />
-                                        }
-                                        />
-
-                                        
-                                        )
-                                })
-                            }
-                            </> */}
-                              
-                                    
-                
-                            
-
-
-
                         </>
                     )}
                 </Grid>
                 <Grid item xs={12}>
-                {activeStep > 0 && (
+                    {activeStep > 0 && (
                         <Button
                             variant="contained"
                             color="secondary"
                             onClick={handleBack}
-                            
-                            
-                sx={{ // Set minimum width
-                borderRadius: '20px',}}
+
+
+                            sx={{ // Set minimum width
+                                borderRadius: '20px',
+                            }}
                         >
                             Back
                         </Button>
@@ -305,10 +275,11 @@ const TripForm = () => {
                         variant="contained"
                         color="primary"
                         onClick={handleNext}
-                       
-                sx={{ // Set minimum width
-                borderRadius: '20px',
-                marginLeft: 8 }}
+
+                        sx={{ // Set minimum width
+                            borderRadius: '20px',
+                            marginLeft: 8
+                        }}
                     >
                         Next
                     </Button>)}
@@ -325,7 +296,7 @@ const TripForm = () => {
                     >
                         Submit
                     </Button>)}
-                    
+
                 </Grid>
             </Grid>
         </Container>

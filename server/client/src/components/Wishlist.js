@@ -6,10 +6,8 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
-
-import Divider from '@mui/material/Divider';
-import { getFromLocalStorage, addToLocalStorage } from "../helpers/localStorage";
-import trips from '../trips.json'
+// import { getFromLocalStorage, addToLocalStorage } from "../helpers/localStorage";
+// import trips from '../trips.json'
 import { getDocs, collection, query, updateDoc,doc , getDoc, where} from "firebase/firestore";
 import { auth, db } from '../config/firebase'
 
@@ -25,8 +23,6 @@ const WishList = () => {
     const getMatchedIds = async()=> {
         const userDocRef = doc(db, `users/${auth.currentUser.uid}`)
         try {
-
-
             const UserData = await getDoc(userDocRef)
             let wl = UserData.data().wishlist
             getTripsData(wl)
@@ -61,10 +57,6 @@ const WishList = () => {
 
         }
         
-    
-
-    
-
     useEffect(()=> {
         console.log(auth.currentUser.uid)
         getMatchedIds()
