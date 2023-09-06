@@ -43,11 +43,12 @@ const UserSettings = () => {
     };
     const handleSubmit = async (e) => {
         e.preventDefault()
-        if (user && user.id) {
+        if (user && user.uid) {
             const userDocRef = doc(db, `users/${auth.currentUser.uid}`);
+            console.log(userData)
             try {
                 await updateDoc(userDocRef, {
-                    ...formData,
+                    ...userData,
                 });
                 console.log(`Document  updated successfully.`);
             } catch (err) {
@@ -94,6 +95,7 @@ const UserSettings = () => {
                         onChange={handleChange}
                         fullWidth
                         margin="normal"
+                        helperText="Your name"
                     />
                     <TextField
                         value={userData.age}
@@ -102,6 +104,7 @@ const UserSettings = () => {
                         onChange={handleChange}
                         fullWidth
                         margin="normal"
+                        helperText="Your age"
                     />
                     <TextField
                         value={userData.email}
@@ -110,6 +113,7 @@ const UserSettings = () => {
                         onChange={handleChange}
                         fullWidth
                         margin="normal"
+                        helperText="Your email"
                     />
                     <TextField
                         value={userData.bio}
@@ -118,11 +122,13 @@ const UserSettings = () => {
                         onChange={handleChange}
                         fullWidth
                         margin="normal"
+                        helperText="Your bio"
                     />
                     <Button
                         variant="contained"
                         color="primary"
                         onClick={(e) => {
+                            console.log(userData)
                             handleSubmit(e)
                             navigate('/profile')
 

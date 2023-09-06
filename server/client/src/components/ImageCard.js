@@ -26,7 +26,7 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import InfoIcon from '@mui/icons-material/Info';
 import { getFromLocalStorage, addToLocalStorage } from "../helpers/localStorage";
-import { getDocs, collection, query, updateDoc, doc, setDoc, getDoc, arrayUnion } from "firebase/firestore";
+import { getDocs, collection, query, updateDoc, doc, setDoc, getDoc, arrayUnion,onSnapshot } from "firebase/firestore";
 import { auth, db } from '../config/firebase'
 import ErrorBoundary from "./ErrorBoundary";
 import { onAuthStateChanged } from "firebase/auth";
@@ -46,13 +46,26 @@ const ExpandMore = styled((props) => {
 }));
 
 const ImageCard = () => {
-  
+
     const navigate = useNavigate()
     const [expanded, setExpanded] = useState(false);
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
+
+    // useEffect(() => {
+    //     if (user && user.uid) {
+    //         onSnapshot(collection(db, "trips"), (querySnapshot) => {
+    //             const myAr = [];
+    //             querySnapshot.forEach((doc) => {
+    //                 myAr.push(doc.data());
+    //             });
+    //             setTrip(myAr);
+    //         });
+    //     }
+    // }
+    //     , [user]);
 
     const fetchTrips = async () => {
         const querySnapshot = await getDocs(query(collection(db, "trips")));
@@ -76,39 +89,39 @@ const ImageCard = () => {
 
     const fetchSaved = async () => {
 
-                    const userDocRef = doc(db, `users/${auth.currentUser.uid}`);
-                    try {
-                        const UserData = await getDoc(userDocRef)
-                        let matched = UserData.data().matched
-                        let rejects = UserData.data().reject;
-                        let wishlist = UserData.data().wishlist;
-                        console.log(rejects)
-                        console.log(matched)
-                        console.log(wishlist)
-                        let saveAr = []
-                        if (rejects) {
-                            saveAr.push(...rejects)
-                        }
-                        if (matched) {
-                            saveAr.push(...matched)
-                        }
-                        if (wishlist) {
-                            saveAr.push(...wishlist)
-                        }
-                        console.log(saveAr)
-                        let newTrip = [...allTrip]
-                        console.log('before filter' + newTrip)
-                        newTrip.filter((trip) => saveAr.indexOf(trip.id) == -1)
-                        console.log('after filter' + newTrip)
-                        setTrip(newTrip)
-                        setSaved(saveAr)
+        const userDocRef = doc(db, `users/${auth.currentUser.uid}`);
+        try {
+            const UserData = await getDoc(userDocRef)
+            let matched = UserData.data().matched
+            let rejects = UserData.data().reject;
+            let wishlist = UserData.data().wishlist;
+            console.log(rejects)
+            console.log(matched)
+            console.log(wishlist)
+            let saveAr = []
+            if (rejects) {
+                saveAr.push(...rejects)
+            }
+            if (matched) {
+                saveAr.push(...matched)
+            }
+            if (wishlist) {
+                saveAr.push(...wishlist)
+            }
+            console.log(saveAr)
+            let newTrip = [...allTrip]
+            console.log('before filter' + newTrip)
+            newTrip.filter((trip) => saveAr.indexOf(trip.id) == -1)
+            console.log('after filter' + newTrip)
+            setTrip(newTrip)
+            setSaved(saveAr)
 
 
-                    } catch (err) {
-                        console.error(`Error updating document:`, err);
-                    }
-                }
-            
+        } catch (err) {
+            console.error(`Error updating document:`, err);
+        }
+    }
+
 
 
     // 
@@ -124,9 +137,9 @@ const ImageCard = () => {
     const [loading, setLoading] = useState(true);
 
 
-    
 
-    
+
+
 
     const scrollImg = (direction) => {
         let length = tripToShow[0].image.length
@@ -176,15 +189,15 @@ const ImageCard = () => {
         const q = query(collection(db, 'users'));
 
 
-        const userDocRef = doc(db,`users/${auth.currentUser.uid}`)
+        const userDocRef = doc(db, `users/${auth.currentUser.uid}`)
         try {
-                                await updateDoc(userDocRef, {
-                                    reject: arrayUnion(tripToShow[0].id)
-                                });
-                                console.log(`Document  updated successfully.`);
-                            } catch (err) {
-                                console.error(`Error updating document:`, err);
-                            }
+            await updateDoc(userDocRef, {
+                reject: arrayUnion(tripToShow[0].id)
+            });
+            console.log(`Document  updated successfully.`);
+        } catch (err) {
+            console.error(`Error updating document:`, err);
+        }
         tripEvaluate()
     }
 
@@ -194,15 +207,15 @@ const ImageCard = () => {
         // setWishList([...wishlist, tripToShow[0].id])
 
         // addToLocalStorage('wishListTrips', wishlist)
-        const userDocRef = doc(db,`users/${auth.currentUser.uid}`)
+        const userDocRef = doc(db, `users/${auth.currentUser.uid}`)
         try {
-                                await updateDoc(userDocRef, {
-                                    wishlist: arrayUnion(tripToShow[0].id)
-                                });
-                                console.log(`Document  updated successfully.`);
-                            } catch (err) {
-                                console.error(`Error updating document:`, err);
-                            }
+            await updateDoc(userDocRef, {
+                wishlist: arrayUnion(tripToShow[0].id)
+            });
+            console.log(`Document  updated successfully.`);
+        } catch (err) {
+            console.error(`Error updating document:`, err);
+        }
         tripEvaluate()
 
     }
@@ -212,15 +225,15 @@ const ImageCard = () => {
         // setMatchReq([...matchReq, tripToShow[0].id])
 
         // addToLocalStorage('matchedTrips', matchReq)
-        const userDocRef = doc(db,`users/${auth.currentUser.uid}`)
+        const userDocRef = doc(db, `users/${auth.currentUser.uid}`)
         try {
-                                await updateDoc(userDocRef, {
-                                    matched: arrayUnion(tripToShow[0].id)
-                                });
-                                console.log(`Document  updated successfully.`);
-                            } catch (err) {
-                                console.error(`Error updating document:`, err);
-                            }
+            await updateDoc(userDocRef, {
+                matched: arrayUnion(tripToShow[0].id)
+            });
+            console.log(`Document  updated successfully.`);
+        } catch (err) {
+            console.error(`Error updating document:`, err);
+        }
         tripEvaluate()
     }
     useEffect(() => {
@@ -231,16 +244,39 @@ const ImageCard = () => {
 
         return () => unsubscribe();
     }, [])
-  
+
     useEffect(() => {
-        // console.log(auth.currentUser.uid)
         if (user && user.uid){
-            fetchTrips()
+            fetchSaved()
         }
         
-        // fetchSaved()
-
     }, [user])
+
+    useEffect(() => {
+        if (user && user.uid) {
+            onSnapshot(collection(db, "trips"), (querySnapshot) => {
+                const myAr = [];
+                querySnapshot.forEach((doc) => {
+                    let obj = { id: doc.id, ...doc.data()}
+                    if (saved.indexOf(obj.id) == -1) {
+                        myAr.push(obj)
+                    }
+                });
+                setTrip(myAr);
+            });
+        }
+    }
+    ,[saved]);
+
+    // useEffect(() => {
+    //     // console.log(auth.currentUser.uid)
+    //     if (user && user.uid) {
+    //         fetchTrips()
+    //     }
+
+    //     // fetchSaved()
+
+    // }, [user])
 
     if (loading) {
         return <p>Loading...</p>;
@@ -264,7 +300,7 @@ const ImageCard = () => {
 
         return (
 
-            <Card sx={{ height: '100%', overflowY: 'auto', borderRadius:'0' }}>
+            <Card sx={{ height: '100%', overflowY: 'auto', borderRadius: '0' }}>
                 <CardContent sx={{
                     display: 'flex',
                     position: 'relative',

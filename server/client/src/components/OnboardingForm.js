@@ -67,7 +67,8 @@ const OnboardingForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        if (user&&user.id) {
+        
+        if (user&&user.uid) {
             const userDocRef = doc(db, `users/${auth.currentUser.uid}`);
             try {
                 await updateDoc(userDocRef, {
