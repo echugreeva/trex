@@ -8,51 +8,52 @@ import { getFromLocalStorage, addToLocalStorage } from "../../helpers/localStora
 import trips from '../../trips.json'
 import { getDocs, collection, query, updateDoc, doc, getDoc, where } from "firebase/firestore";
 import { auth, db } from '../../config/firebase'
+import {useTrips} from '../useTrips.js'
 
 const ChatScreen = () => {
-    const [matchListIds, setIds] = useState([])
-    const [matchTrips, setTrips] = useState([])
+    // const [matchListIds, setIds] = useState([])
+    // const [matchTrips, setTrips] = useState([])
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
     // const [user, loading, error] = useAuthState(auth)
     let navigate = useNavigate();
 
-    const getMatchedIds = async () => {
-        const userDocRef = doc(db, `users/${auth.currentUser.uid}`)
-        try {
+    // const getMatchedIds = async () => {
+    //     const userDocRef = doc(db, `users/${auth.currentUser.uid}`)
+    //     try {
 
-            const UserData = await getDoc(userDocRef)
-            let match = UserData.data().matched
-            getTripsData(match)
-            setIds(match)
-        } catch (err) {
-            console.error(`Error updating document:`, err);
-        }
+    //         const UserData = await getDoc(userDocRef)
+    //         let match = UserData.data().matched
+    //         getTripsData(match)
+    //         setIds(match)
+    //     } catch (err) {
+    //         console.error(`Error updating document:`, err);
+    //     }
 
-    }
+    // }
 
-    const getTripsData = async (data) => {
-        try {
-            const tripRef = collection(db, "trips")
-            const specificTripsArray = [];
-            for (const tripId of data) {
-                const tripDocRef = doc(db, "trips", tripId);
-                const tripDocSnapshot = await getDoc(tripDocRef);
+    // const getTripsData = async (data) => {
+    //     try {
+    //         const tripRef = collection(db, "trips")
+    //         const specificTripsArray = [];
+    //         for (const tripId of data) {
+    //             const tripDocRef = doc(db, "trips", tripId);
+    //             const tripDocSnapshot = await getDoc(tripDocRef);
 
-                if (tripDocSnapshot.exists()) {
-                    specificTripsArray.push({ id: tripDocSnapshot.id, ...tripDocSnapshot.data() });
-                }
-            }
+    //             if (tripDocSnapshot.exists()) {
+    //                 specificTripsArray.push({ id: tripDocSnapshot.id, ...tripDocSnapshot.data() });
+    //             }
+    //         }
 
-            setTrips(specificTripsArray);
-        }
-        catch (error) {
-            console.error('Error fetching specific trips:', error);
-        }
+    //         setTrips(specificTripsArray);
+    //     }
+    //     catch (error) {
+    //         console.error('Error fetching specific trips:', error);
+    //     }
 
 
 
-    }
+    // }
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged(user => {
             setUser(user);
@@ -63,10 +64,15 @@ const ChatScreen = () => {
     }, [])
 
 
-    useEffect(() => {
-        if (user && user.uid) { getMatchedIds() }
+    // useEffect(() => {
+    //     if (user && user.uid) { getMatchedIds() }
 
-    }, [user])
+    // }, [user])
+
+
+    let matched = 'matched'
+
+    const trips = useTrips(user, matched)
 
     if (loading) {
         return <p>Loading...</p>;
@@ -75,12 +81,12 @@ const ChatScreen = () => {
     if (!user) {
         return navigate("/");
     }
-
+// matchTrips.map
 
     return (
         <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
             {
-                matchTrips.map(trip => {
+               trips.map(trip => {
                     return (
                         <ChatPreview
                             trip={trip}
