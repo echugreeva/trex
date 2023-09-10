@@ -70,9 +70,9 @@ const ChatScreen = () => {
     // }, [user])
 
 
-    let matched = 'matched'
 
-    const trips = useTrips(user, matched)
+
+    const trips = useTrips(user, 'matched')
 
     if (loading) {
         return <p>Loading...</p>;

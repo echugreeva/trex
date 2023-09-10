@@ -10,13 +10,14 @@ import Typography from '@mui/material/Typography';
 // import trips from '../trips.json'
 import { getDocs, collection, query, updateDoc, doc, getDoc, where } from "firebase/firestore";
 import { auth, db } from '../config/firebase'
+import {useTrips} from './useTrips.js'
 
 
 const WishList = () => {
 
     //on click? open card with match/reject?
-    const [wishListIds, setIds] = useState([])
-    const [wishTrips, setTrips] = useState([])
+    // const [wishListIds, setIds] = useState([])
+    // const [wishTrips, setTrips] = useState([])
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
     // const [wishListIds, setIds] = useState(getFromLocalStorage('wishListTrips'))
@@ -24,42 +25,42 @@ const WishList = () => {
 
     // const trips = useTrips(user, 'wishlist')
 
-    const getMatchedIds = async () => {
-        const userDocRef = doc(db, `users/${auth.currentUser.uid}`)
-        try {
-            const UserData = await getDoc(userDocRef)
-            let wl = UserData.data().wishlist
-            getTripsData(wl)
-            setIds(wl)
-        } catch (err) {
-            console.error(`Error updating document:`, err);
-        }
+    // const getMatchedIds = async () => {
+    //     const userDocRef = doc(db, `users/${auth.currentUser.uid}`)
+    //     try {
+    //         const UserData = await getDoc(userDocRef)
+    //         let wl = UserData.data().wishlist
+    //         getTripsData(wl)
+    //         setIds(wl)
+    //     } catch (err) {
+    //         console.error(`Error updating document:`, err);
+    //     }
 
 
-    }
+    // }
 
-    const getTripsData = async (data) => {
-        try {
-            const tripRef = collection(db, "trips")
-            const specificTripsArray = [];
-            for (const tripId of data) {
-                const tripDocRef = doc(db, "trips", tripId);
-                const tripDocSnapshot = await getDoc(tripDocRef);
+    // const getTripsData = async (data) => {
+    //     try {
+    //         const tripRef = collection(db, "trips")
+    //         const specificTripsArray = [];
+    //         for (const tripId of data) {
+    //             const tripDocRef = doc(db, "trips", tripId);
+    //             const tripDocSnapshot = await getDoc(tripDocRef);
 
-                if (tripDocSnapshot.exists()) {
-                    specificTripsArray.push({ id: tripDocSnapshot.id, ...tripDocSnapshot.data() });
-                }
-            }
+    //             if (tripDocSnapshot.exists()) {
+    //                 specificTripsArray.push({ id: tripDocSnapshot.id, ...tripDocSnapshot.data() });
+    //             }
+    //         }
 
-            setTrips(specificTripsArray);
-        }
-        catch (error) {
-            console.error('Error fetching specific trips:', error);
-        }
+    //         setTrips(specificTripsArray);
+    //     }
+    //     catch (error) {
+    //         console.error('Error fetching specific trips:', error);
+    //     }
 
 
 
-    }
+    // }
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged(user => {
@@ -70,16 +71,18 @@ const WishList = () => {
         return () => unsubscribe();
     }, [])
 
-    useEffect(() => {
-        if (user && user.uid){
-            getMatchedIds()
-        }
-        
-        // if(matchListIds.length>1){
-        //     getTripsData()
-        // }
+    const trips = useTrips(user, 'wishlist')
 
-    }, [user])
+    // useEffect(() => {
+    //     if (user && user.uid){
+    //         getMatchedIds()
+    //     }
+        
+    //     // if(matchListIds.length>1){
+    //     //     getTripsData()
+    //     // }
+
+    // }, [user])
 
 
     return (
@@ -87,7 +90,7 @@ const WishList = () => {
 
         <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
             {
-                wishTrips.map(trip => {
+                trips.map(trip => {
                     return (
                         <ListItem>
 
