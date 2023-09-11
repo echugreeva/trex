@@ -89,8 +89,6 @@ const itemData = [
 
 
 const TripForm = () => {
-
-    // const lastId = getFromLocalStorage('matchedTrips').pop()[id]
     countries.registerLocale(enLocale);
     const countryObj = countries.getNames("en", { select: "official" });
 

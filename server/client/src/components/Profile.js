@@ -1,7 +1,6 @@
 
 import { useNavigate } from 'react-router-dom';
-import WishList from "./Wishlist"
-import { Box, Stack, Button } from '@mui/material'
+import { Stack, Button } from '@mui/material'
 
 const Profile = () => {
     const navigate = useNavigate()

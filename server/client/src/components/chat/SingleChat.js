@@ -210,21 +210,3 @@ const SingleChat = () => {
 };
 
 export default SingleChat;
-
-// [
-//   {
-//     name: "Jason",
-//     image:
-//       "https://images.pexels.com/photos/7533347/pexels-photo-7533347.jpeg?auto=compress&cs=tinysrgb&w=800",
-//     message: "Hey",
-//   },
-//   {
-//     name: "Jason",
-//     image:
-//       "https://images.pexels.com/photos/7533347/pexels-photo-7533347.jpeg?auto=compress&cs=tinysrgb&w=800",
-//     message: "Time for vacay",
-//   },
-//   {
-//     message: "yo",
-//   },
-// ]

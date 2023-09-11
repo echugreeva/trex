@@ -18,10 +18,9 @@ const Home = () => {
      useEffect(()=>{
         onAuthStateChanged(auth, (user) => {
             if (user) {
-              // User is signed in, see docs for a list of available properties
-              // https://firebase.google.com/docs/reference/js/auth.user
+             
               const uid = user.uid;
-              // ...
+      
             } else {
                 return navigate("/");
               // User is signed out

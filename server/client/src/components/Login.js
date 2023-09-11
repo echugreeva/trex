@@ -1,26 +1,18 @@
 import { useState } from 'react';
 import {
     Container,
-    Grid,
     Typography,
     Button,
     TextField
 
 } from "@mui/material";
 import { useNavigate, Link } from 'react-router-dom'
-
 import { auth, logInWithEmailAndPassword, registerWithEmailAndPassword } from '../config/firebase'
 import { useAuthState } from "react-firebase-hooks/auth";
 
 
-
-
-
-
 const Login = () => {
     const navigate = useNavigate()
-
-
     const [formData, setFormData] = useState('');
     const [user, loading, error] = useAuthState(auth);
 
