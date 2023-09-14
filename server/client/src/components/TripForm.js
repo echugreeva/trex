@@ -101,6 +101,8 @@ const TripForm = () => {
     const [activeStep, setActiveStep] = useState(0);
     const [formData, setFormData] = useState({ image: ['https://images.pexels.com/photos/2405101/pexels-photo-2405101.jpeg?auto=compress&cs=tinysrgb&w=800'] });
     const [selectedCountry, setSelectedCountry] = useState("US");
+    const [startDate, setStart] = useState(dayjs())
+    const [endDate, setEnd] = useState(dayjs())
     const navigate = useNavigate()
 
     const selectCountryHandler = (value) => setSelectedCountry(value);
@@ -193,9 +195,32 @@ const TripForm = () => {
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
 
                                 <Typography>From: </Typography>
-                                <MobileDatePicker defaultValue={dayjs('2022-04-17')} />
+                                <MobileDatePicker
+                                    value={startDate}
+                                    onChange={(newValue) => {
+                                        const timestamp = dayjs(newValue).toDate();
+
+                                        console.log(timestamp)
+                                        setStart(timestamp)
+                                        setFormData({
+                                            ...formData,
+                                            ['start_d']: timestamp
+                                        })
+                                    }} />
                                 <Typography>Until: </Typography>
-                                <MobileDatePicker defaultValue={dayjs('2022-04-17')} />
+                                <MobileDatePicker
+                                    value={endDate}
+                                    onChange={(newValue) => {
+                                        console.log(newValue)
+                                        const timestamp = dayjs(newValue).toDate();
+
+                                        console.log(timestamp)
+                                        setEnd(timestamp)
+                                        setFormData({
+                                            ...formData,
+                                            ['end_d']: timestamp
+                                        })
+                                    }} />
                             </LocalizationProvider>
                         </>
                     )}
