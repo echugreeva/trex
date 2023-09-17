@@ -103,6 +103,27 @@ const TripForm = () => {
     const [selectedCountry, setSelectedCountry] = useState("US");
     const [startDate, setStart] = useState(dayjs())
     const [endDate, setEnd] = useState(dayjs())
+    const [tag, setTag] = useState({
+        hiking: false,
+        beach: false,
+        mountains: false,
+        forest: false,
+        city: false,
+        nature: false,
+        history: false,
+        art: false,
+        music: false,
+        food: false,
+        nightlife: false,
+        backpacking: false,
+        culture: false,
+        luxury: false,
+        yoga: false,
+        wine: false,
+        meditation: false,
+    })
+
+    const { adventure, hiking, beach, mountains, forest, city, nature, history, art, music, food, nightlife, backpacking, culture, luxury, yoga, wine, meditation } = tag
     const navigate = useNavigate()
 
     const selectCountryHandler = (value) => setSelectedCountry(value);
@@ -120,6 +141,15 @@ const TripForm = () => {
             ...formData,
             [event.target.name]: event.target.value,
         });
+    };
+
+    const handleTagChange = (event) => {
+
+        setTag({ ...tag, [event.target.name]: !tag[[event.target.name]] });
+        console.log(tag)
+        setFormData({
+            ...formData, tags: tag
+        })
     };
 
     const addTripToDB = async () => {
@@ -146,6 +176,7 @@ const TripForm = () => {
             console.error(`Error updating document:`, err);
         }
     }
+
 
 
 
@@ -252,7 +283,7 @@ const TripForm = () => {
                                 {
                                     hobbies.map((hobby) => {
                                         return (
-                                            <Checkbox name='interests' icon={<Chip variant="outlined" label={hobby} />} checkedIcon={<Chip variant="outlined" color="info" label={hobby} />} />
+                                            <Checkbox name={hobby} onChange={handleTagChange}  icon={<Chip variant="outlined" label={hobby} />} checkedIcon={<Chip variant="outlined" color="info" label={hobby} />} />
                                         )
                                     })
                                 }

@@ -24,8 +24,9 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { onAuthStateChanged } from "firebase/auth";
 
 const steps = ["Step 1", "Step 2", "Step 3"];
-const hobbies = ['Adventure', 'Hiking', 'Beach', 'Mountains', 'Forest', 'City', 'Nature', 'History', 'Art', 'Music', 'Food', 'Nightlife', 'Backpacking', 'Culture', 'Luxury', 'Yoga', 'Wine', 'Meditation'
-]
+const hobbies = ['adventure', 'hiking', 'beach', 'mountains', 'forest', 'city', 'nature',
+'history', 'art', 'music', 'food', 'nightlife', 'backpacking', 'culture',
+'luxury', 'yoga', 'wine', 'meditation']
 
 //in the future get all input fields and step in props and generate form as a function
 
