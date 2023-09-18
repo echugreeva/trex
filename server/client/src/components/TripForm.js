@@ -122,6 +122,7 @@ const TripForm = () => {
         wine: false,
         meditation: false,
     })
+    const [images, setImages] = useState()
 
     const { adventure, hiking, beach, mountains, forest, city, nature, history, art, music, food, nightlife, backpacking, culture, luxury, yoga, wine, meditation } = tag
     const navigate = useNavigate()
@@ -184,6 +185,34 @@ const TripForm = () => {
         addTripToDB()
         navigate('/chats')
     }
+
+    useEffect(() => {
+        if (activeStep === 3) {
+            const query = formData.location
+            const url = `https://pexelsdimasv1.p.rapidapi.com/v1/search?query=${query}&locale=en-US&per_page=9&page=1`;
+            const options = {
+                method: 'GET',
+                headers: {
+                    Authorization: `${process.env.REACT_APP_PEXEL_API}`,
+                    'X-RapidAPI-Key': '4980814c76msh916d21acc0ea2b9p1680a1jsn3be7217effc7',
+                    'X-RapidAPI-Host': 'PexelsdimasV1.p.rapidapi.com'
+                }
+            };
+            const fetchData = async()=> {
+                try {
+                    const response = await fetch(url, options);
+                    const result = await response.text();
+                    console.log(result);
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+            fetchData()
+            
+        }
+
+    }, [activeStep])
+
     return (
         <Container maxWidth="sm" sx={{ mt: 8 }}>
             <MobileStepper
@@ -204,7 +233,7 @@ const TripForm = () => {
                 <Grid item xs={12}>
                     {activeStep === 0 && (
                         <>
-                            <Select
+                            {/* <Select
                                 label="Trip Location"
                                 name="location"
                                 fullWidth
@@ -222,7 +251,14 @@ const TripForm = () => {
                                             {label}
                                         </MenuItem>
                                     ))}
-                            </Select>
+                            </Select> */}
+                            <TextField
+                                label="Trip Location"
+                                name="location"
+                                onChange={handleChange}
+                                fullWidth
+                                margin="normal"
+                            />
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
 
                                 <Typography>From: </Typography>
@@ -283,7 +319,7 @@ const TripForm = () => {
                                 {
                                     hobbies.map((hobby) => {
                                         return (
-                                            <Checkbox name={hobby} onChange={handleTagChange}  icon={<Chip variant="outlined" label={hobby} />} checkedIcon={<Chip variant="outlined" color="info" label={hobby} />} />
+                                            <Checkbox name={hobby} onChange={handleTagChange} icon={<Chip variant="outlined" label={hobby} />} checkedIcon={<Chip variant="outlined" color="info" label={hobby} />} />
                                         )
                                     })
                                 }
