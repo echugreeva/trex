@@ -1,153 +1,139 @@
 
-import { useState, useEffect } from 'react'
-import { collection, query, onSnapshot, where, getDoc, getDocs, doc, get, updateDoc, Timestamp } from "firebase/firestore"
-import { auth, db } from '../config/firebase'
-import { Typography, Box, Container, Grid, TextField, Button } from '@mui/material'
-import { useAuthState } from "react-firebase-hooks/auth";
-import { useNavigate } from 'react-router-dom'
-import ErrorBoundary from "./ErrorBoundary";
-import { onAuthStateChanged } from "firebase/auth";
-
-
-
-
+import { useState, useEffect } from 'react';
+import { getDoc, doc, updateDoc } from 'firebase/firestore';
+import { auth, db } from '../config/firebase';
+import { Typography, Container, Grid, TextField, Button } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 const UserSettings = () => {
-    const [userData, setUserData] = useState({})
-    const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [formData, setFormData] = useState({});
-    let navigate = useNavigate();
+	const [userData, setUserData] = useState({});
+	const [user, setUser] = useState(null);
+	const [loading, setLoading] = useState(true);
+	const [formData, setFormData] = useState({});
+	let navigate = useNavigate();
 
-    // const [user, loading, error] = useAuthState(auth)
+	const getUserData = async () => {
+		const userDocRef = doc(db, `users/${auth.currentUser.uid}`);
+		try {
+			let data = await getDoc(userDocRef);
+			let dbData = data.data();
+			setUserData(dbData);
+		} catch (err) {
+			console.error('Error updating document:', err);
 
-    const getUserData = async () => {
-        const userDocRef = doc(db, `users/${auth.currentUser.uid}`)
-        try {
-            let data = await getDoc(userDocRef)
-            let dbData = data.data()
-            setUserData(dbData)
-        } catch (err) {
-            console.error(`Error updating document:`, err);
+		}
+	};
+	const handleChange = (event) => {
+		setUserData({
+			...userData, [event.target.name]: event.target.value,
+		});
+		setFormData({
+			...formData,
+			[event.target.name]: event.target.value,
+		});
+	};
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+		if (user && user.uid) {
+			const userDocRef = doc(db, `users/${auth.currentUser.uid}`);
+			console.log(userData);
+			try {
+				await updateDoc(userDocRef, {
+					...userData,
+				});
+				console.log('Document  updated successfully.');
+			} catch (err) {
+				console.error('Error updating document :', err);
+			}
+		}
+	};
+	useEffect(() => {
+		const unsubscribe = auth.onAuthStateChanged(user => {
+			setUser(user);
+			setLoading(false);
+		});
 
-        }
-    }
-    const handleChange = (event) => {
-        setUserData({
-            ...userData, [event.target.name]: event.target.value,
-        })
-        setFormData({
-            ...formData,
-            [event.target.name]: event.target.value,
-        });
-    };
-    const handleSubmit = async (e) => {
-        e.preventDefault()
-        if (user && user.uid) {
-            const userDocRef = doc(db, `users/${auth.currentUser.uid}`);
-            console.log(userData)
-            try {
-                await updateDoc(userDocRef, {
-                    ...userData,
-                });
-                console.log(`Document  updated successfully.`);
-            } catch (err) {
-                console.error(`Error updating document :`, err);
-            }
-        }
-    }
-    useEffect(() => {
-        const unsubscribe = auth.onAuthStateChanged(user => {
-            setUser(user);
-            setLoading(false);
-        });
+		return () => unsubscribe();
+	}, []);
 
-        return () => unsubscribe();
-    }, [])
+	useEffect(() => {
+		if (user && user.uid) {
 
+			getUserData();
+		}
 
-    useEffect(() => {
-        if (user && user.uid) {
+	}, [user]);
 
-            getUserData()
-        }
+	if (loading) {
+		return <p>Loading...</p>;
+	}
 
-    }, [user])
+	if (!user) {
+		return navigate('/');
+	}
 
-    if (loading) {
-        return <p>Loading...</p>;
-    }
+	return (
+		<Container maxWidth="sm" sx={{ mt: 8 }}>
+			<Grid container direction="column" alignItems="center" spacing={2}>
+				<Grid item xs={12}>
+					<Typography>Here is your profile data, feel free to update it</Typography>
+					<TextField
+						value={userData.name}
+						// label="Name"
+						name="name"
+						onChange={handleChange}
+						fullWidth
+						margin="normal"
+						helperText="Your name"
+					/>
+					<TextField
+						value={userData.age}
+						// label="Age"
+						name="age"
+						onChange={handleChange}
+						fullWidth
+						margin="normal"
+						helperText="Your age"
+					/>
+					<TextField
+						value={userData.email}
+						//  label="Email"
+						name="email"
+						onChange={handleChange}
+						fullWidth
+						margin="normal"
+						helperText="Your email"
+					/>
+					<TextField
+						value={userData.bio}
+						//  label="Email"
+						name="bio"
+						onChange={handleChange}
+						fullWidth
+						margin="normal"
+						helperText="Your bio"
+					/>
+					<Button
+						variant="contained"
+						color="primary"
+						onClick={(e) => {
+							console.log(userData);
+							handleSubmit(e);
+							navigate('/profile');
 
-    if (!user) {
-        return navigate("/");
-    }
-
-
-    return (
-        <Container maxWidth="sm" sx={{ mt: 8 }}>
-            <Grid container direction="column" alignItems="center" spacing={2}>
-                <Grid item xs={12}>
-                    <Typography>Here is your profile data, feel free to update it</Typography>
-                    <TextField
-                        value={userData.name}
-                        // label="Name"
-                        name="name"
-                        onChange={handleChange}
-                        fullWidth
-                        margin="normal"
-                        helperText="Your name"
-                    />
-                    <TextField
-                        value={userData.age}
-                        // label="Age"
-                        name="age"
-                        onChange={handleChange}
-                        fullWidth
-                        margin="normal"
-                        helperText="Your age"
-                    />
-                    <TextField
-                        value={userData.email}
-                        //  label="Email"
-                        name="email"
-                        onChange={handleChange}
-                        fullWidth
-                        margin="normal"
-                        helperText="Your email"
-                    />
-                    <TextField
-                        value={userData.bio}
-                        //  label="Email"
-                        name="bio"
-                        onChange={handleChange}
-                        fullWidth
-                        margin="normal"
-                        helperText="Your bio"
-                    />
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={(e) => {
-                            console.log(userData)
-                            handleSubmit(e)
-                            navigate('/profile')
-
-                        }}
-                        sx={{ // Set minimum width
-                            borderRadius: '20px',
+						}}
+						sx={{ // Set minimum width
+							borderRadius: '20px',
                             
-                        }}
-                    >
+						}}
+					>
                         Submit Changes
-                    </Button>
+					</Button>
 
-                </Grid>
-                {/* <Typography>Name: {userData.name}</Typography>
-                <Typography>Email: {userData.name}</Typography>
-                <Typography>Age: {userData.age}</Typography> */}
-            </Grid>
-        </Container>
-    )
-}
+				</Grid>
+			</Grid>
+		</Container>
+	);
+};
 
-export default UserSettings
+export default UserSettings;
