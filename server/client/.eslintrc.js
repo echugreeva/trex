@@ -45,6 +45,6 @@ module.exports = {
 			'error',
 			'always'
 		],
-		'@stylistic/no-multiple-empty-lines': ["error", { "max": 1, "maxEOF": 0 }]
+		'@stylistic/no-multiple-empty-lines': ['error', { 'max': 1, 'maxEOF': 0 }]
 	}
 };
